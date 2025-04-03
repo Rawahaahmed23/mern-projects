@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [user, setuser] = useState({
@@ -20,9 +21,29 @@ function Login() {
     });
   };
 
-  const formhandle = (e) => {
+  const formhandle =async (e) => {
     e.preventDefault();
-    alert(JSON.stringify(user)); // Convert to string to display properly
+    try{
+      const login = await fetch("http://localhost:5000/api/router/login",{
+        method:'Post',
+        header:{
+          "Content-Type": "application/json"
+        },
+        body:JSON.stringify()
+      })
+
+      if(login.ok){
+        setuser ({
+        
+          email: "",
+        
+          password: "",
+        })
+        navigate("/home")
+      }
+    }catch(error){
+
+    }
   };
 
   return (
