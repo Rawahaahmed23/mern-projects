@@ -4,6 +4,8 @@ const main = require('../controller/index')
 
 const signupschema = require("../validator/auth-validator")
 const validate = require("../middleware/validate-middleware")
+const authmiddleware = require('../middleware/auth-middleware')
+
 
 
 
@@ -14,6 +16,8 @@ route.route("/home").get(main.home)
 
 route.route("/register").post(validate(signupschema.signupSchema),main.register)
 route.route("/login").post(validate(signupschema.loginschema),main.login)
+
+route.route("/user").get(authmiddleware ,main.user)
 
 
 module.exports = route

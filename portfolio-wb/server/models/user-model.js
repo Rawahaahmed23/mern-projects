@@ -74,7 +74,7 @@ userschema.methods.generateToken= async function () {
     return  jwt.sign({
       userid:this._id.toString(),
       email: this.email,
-      isAdmin: this.admin
+      isAdmin: this.isAdmin,
     },
     process.env.JWT_SELECT_KEY,{
       expiresIn:"30d",
