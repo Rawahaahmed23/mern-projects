@@ -10,6 +10,7 @@ function Contact() {
     message: ""
   });
 
+
  
   const handle = (e)=>{
   const name = e.target.name
@@ -22,9 +23,35 @@ setContact({
 
   }
 
-  const handelSubmit =(e)=>{
+  const handelSubmit =async (e)=>{
     e.preventDefault()
-  alert(contact.username);
+    
+
+    try{
+      const response = await fetch("http://localhost:5000/api/form/contact",{
+        method: 'Post',
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body:JSON.stringify(contact)
+        
+        
+   
+      }
+    )
+    console.log(response.message);
+      if(response.ok){
+        setContact({
+          username: "",
+          email: "",
+          message: ""
+        })
+      }
+    }catch(error){
+     console.log(error);
+     
+    }
+  
     
   }
   return (

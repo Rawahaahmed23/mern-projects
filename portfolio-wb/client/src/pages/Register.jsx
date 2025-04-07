@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../store/auth';
 
 function Register() {
   const [user, setuser] = useState({
@@ -9,6 +10,8 @@ function Register() {
     phone: "",
     password: "",
   });
+
+  const {storedToken}  = useAuth()
 const navigate = useNavigate()
   const handleInput = (e) => {
     let name = e.target.name;
@@ -32,7 +35,11 @@ const navigate = useNavigate()
         body: JSON.stringify(user)
       })
       if(response.ok){
-        alert("registration successful");
+        alert("register sucessful")
+        const res_data = await response.json()
+       
+        localStorage.setItem("token",res_data.token)
+            
         setuser ({
           username: "",
           email: "",
@@ -40,6 +47,12 @@ const navigate = useNavigate()
           password: "",
         })
         navigate("/login")
+        storedToken(res_data.token)
+ 
+        
+       
+        
+       
       }
       console.log("response data : ", response);
     }catch(error){

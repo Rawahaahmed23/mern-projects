@@ -32,12 +32,12 @@ console.log(req.body);
      
   const userCreated = await User.create({ username, email, phone, password});
 
-res.status(201).json({ message: userCreated });
-// res.status(201).json({
-//   msg: "Registration Successful",
-//   token: await userCreated.generateToken(),
-//   userId: userCreated._id.toString(),
-// });
+
+res.status(201).json({
+  msg: "Registration Successful",
+  token: await userCreated.generateToken(),
+  userId: userCreated._id.toString(),
+});
 
 
     

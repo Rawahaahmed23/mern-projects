@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { use } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../store/auth';
 
 function Navbar() {
+  const { isLoggedIn} = useAuth();
+  console.log("login or not ", isLoggedIn);
+
+  
   return (
     <div>
       <nav className='flex w-full justify-evenly border-b border-gray-400'>
@@ -48,7 +53,20 @@ function Navbar() {
               <span>Contact</span>
               <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
             </NavLink>
+          </li>  
+
+
+          {isLoggedIn ? (
+           <li className="relative group">
+            <NavLink 
+              to="/logout" 
+              className={({ isActive }) => isActive ? "text-blue-500" : "hover:text-blue-500"}
+            >
+              <span>Logout</span>
+              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </NavLink>
           </li>
+        ) : ( <>
           <li className="relative group">
             <NavLink 
               to="/register" 
@@ -68,6 +86,8 @@ function Navbar() {
               <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
             </NavLink>
           </li>
+          </>)}
+       
         </ul>
       </nav>
     </div>

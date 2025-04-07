@@ -1,3 +1,5 @@
+import Services from "../component/Services"
+import Service from "./Service"
 
 function Home() {
   return (
@@ -21,6 +23,7 @@ function Home() {
            </div>
         </div>
       </div>
+      <Services />
     </main>
     
     </>

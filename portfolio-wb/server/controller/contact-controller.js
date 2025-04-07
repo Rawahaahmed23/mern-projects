@@ -12,6 +12,8 @@ const contactForm = async (req, res)=> {
       }
     await contact.create(detail)
 
+    
+
     res.status(200).json({msg:"msg go sucessful"})
   }catch(error){
     res.status(500).json({msg:'not deliverd'})

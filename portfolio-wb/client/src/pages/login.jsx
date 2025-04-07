@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../store/auth';
 function Login() {
   const [user, setuser] = useState({
-   
+    
     email: "",      
-
+    
     password: "",
   });
-
+  const navigate = useNavigate()
+  const {storedToken}  = useAuth()
   const handleInput = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -21,25 +22,31 @@ function Login() {
     });
   };
 
-  const formhandle =async (e) => {
+  const formhandle = async (e) => {
     e.preventDefault();
     try{
       const login = await fetch("http://localhost:5000/api/router/login",{
         method:'Post',
-        header:{
+        headers:{
           "Content-Type": "application/json"
         },
-        body:JSON.stringify()
+        body:JSON.stringify(user)
       })
 
       if(login.ok){
+
+     
+        const res_data = await login.json()
+        console.log("res from server",res_data);
+        localStorage.setItem("token",res_data.token)
         setuser ({
         
           email: "",
         
           password: "",
         })
-        navigate("/home")
+        navigate("/")
+        storedToken(res_data.token)
       }
     }catch(error){
 

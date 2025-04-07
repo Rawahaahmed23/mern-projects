@@ -13,11 +13,12 @@ const contactScehma =  new Schema({
         require: true,
        
     },
-    messgae:{
+    message:{
        type: String,
        require: true
     }
 })
+
 
 const contact = new model('contact',contactScehma)
 module.exports = contact

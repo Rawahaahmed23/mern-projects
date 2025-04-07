@@ -4,9 +4,10 @@ import About from "./pages/About";
 import Navbar from "./component/navbar";
 import Contact from "./pages/Contact";
 import Service from "./pages/Service";
-import Register from "./pages/register";
+import Register from "./pages/Register";
 import Login from "./pages/login";
 import Error from "./pages/Error";
+import LogOut from "./pages/LogOut";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/service" element={<><Navbar /><Service /></>} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<LogOut />} />
         <Route path="/contact" element={<><Navbar /><Contact /></>} />
         <Route path="*"element={<Error/>}></Route>
       </Routes>
