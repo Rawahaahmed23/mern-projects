@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa"
 import { useNavigate } from "react-router-dom";
+import {useAuth} from "../store/auth"
 
 function Contact() {
   const [contact, setContact] = useState({
@@ -9,7 +10,18 @@ function Contact() {
     email: "",
     message: ""
   });
+const [userData,setuserdata]= useState(true)
+  const {user}=  useAuth()
+  if (userData && user){
+  setContact({
+    username: user.username ,
+    email: user.email,
+    massage: ""
+  })
 
+
+  setuserdata(false)
+  }
 
  
   const handle = (e)=>{
