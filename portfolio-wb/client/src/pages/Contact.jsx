@@ -16,7 +16,7 @@ const [userData,setuserdata]= useState(true)
   setContact({
     username: user.username ,
     email: user.email,
-    massage: ""
+    message: ""  // ✅ Corrected here
   })
 
 
@@ -25,7 +25,8 @@ const [userData,setuserdata]= useState(true)
 
  
   const handle = (e)=>{
-  const name = e.target.name
+ 
+    const name = e.target.name; // ✅ input ke name attribute se value lo
   const value = e.target.value
 
 setContact({
