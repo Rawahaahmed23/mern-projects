@@ -34,9 +34,14 @@ const navigate = useNavigate()
         },
         body: JSON.stringify(user)
       })
+
+  
+      const res_data = await response.json()
+     console.log(res_data.message);
+     
+      
       if(response.ok){
-        alert("register sucessful")
-        const res_data = await response.json()
+        
        
         localStorage.setItem("token",res_data.token)
             
@@ -53,12 +58,15 @@ const navigate = useNavigate()
        
         
        
+      }else{
+        alert(res_data.extraDetails ? res_data.extraDetails :res_data.message)
+      
       }
+
       console.log("response data : ", response);
     }catch(error){
-      console.log(error);
-      alert(error)
-      
+     
+   
     }
   
 

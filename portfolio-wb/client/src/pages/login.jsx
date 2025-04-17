@@ -32,12 +32,13 @@ function Login() {
         },
         body:JSON.stringify(user)
       })
+      const res_data = await login.json()
+    
+  
 
       if(login.ok){
 
      
-        const res_data = await login.json()
-        console.log("res from server",res_data);
         localStorage.setItem("token",res_data.token)
         setuser ({
         
@@ -47,6 +48,8 @@ function Login() {
         })
         navigate("/")
         storedToken(res_data.token)
+      }else{
+        alert(res_data.extraDetails ? res_data.extraDetails : res_data.message);
       }
     }catch(error){
 

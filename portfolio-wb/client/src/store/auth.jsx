@@ -2,11 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 export const context = createContext()
 
-const defaultContactFormData = {
-  username: "",
-  email: "",
-  message: "",
-};
+
 
 export const Authprovider = ({children})=>{
   const [token, setToken] = useState(localStorage.getItem("token") || "");

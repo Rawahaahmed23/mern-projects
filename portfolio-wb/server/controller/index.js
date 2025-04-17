@@ -1,7 +1,32 @@
 const User = require('../models/user-model')
 const bcrypt = require("bcryptjs");
 
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const userExist = await User.findOne({ email });
 
+    if (!userExist) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+   
+    const isPasswordValid = await userExist.comparePassword(password)
+
+    if (isPasswordValid) {
+      res.status(200).json({
+        msg: "Login Successful",
+        token: await userExist.generateToken(),
+        userId: userExist._id.toString(),
+      });
+    } else {
+      res.status(401).json({ message: "incorrect email passowrd" });
+    }
+  } catch (error) {
+    res.status(500).send(error)
+   next(error)
+  }
+};
 
 const home = async (req, res)=>{
     try{
@@ -23,7 +48,7 @@ console.log(req.body);
   
       if(userexist){
        
-         return res.status(400).json({msg:"user already exisir"})
+         return res.status(400).json({message:"user already exisir"})
       }
 
       
@@ -52,32 +77,7 @@ res.status(201).json({
 
 
 
-  const login = async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const userExist = await User.findOne({ email });
-  
-      if (!userExist) {
-        return res.status(400).json({ message: "Invalid credentials" });
-      }
-  
-     
-      const isPasswordValid = await userExist.comparePassword(password)
-  
-      if (isPasswordValid) {
-        res.status(200).json({
-          msg: "Login Successful",
-          token: await userExist.generateToken(),
-          userId: userExist._id.toString(),
-        });
-      } else {
-        res.status(401).json({ message: "incorrect email passowrd" });
-      }
-    } catch (error) {
-      console.error(error);
-     next(error)
-    }
-  };
+ 
   
 
 

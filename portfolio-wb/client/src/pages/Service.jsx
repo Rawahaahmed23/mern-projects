@@ -2,7 +2,13 @@
 
 function Service() {
   return (
-    <div>Service</div>
+    <>
+    <div className="main">
+     
+
+    </div>
+    
+    </>
   )
 }
 

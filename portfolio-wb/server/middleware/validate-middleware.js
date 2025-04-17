@@ -6,10 +6,14 @@ const validate = (schema) => async (req, res, next) => {
   } catch (err) {
    
     const status = 422;
-    const message = err.errors[0].message
+    const massage = 'fill the input properly'
+    const extraDetails = err.errors[0].message
     const error = {
       status,
-      message
+      massage,
+      extraDetails,
+      
+      
     }
     next(error)
   }
