@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/auth';
+import { toast } from 'react-toastify';
+
 function Login() {
   const [user, setuser] = useState({
     
@@ -38,7 +40,7 @@ function Login() {
 
       if(login.ok){
 
-     
+        toast.success('loin sucessful')
         localStorage.setItem("token",res_data.token)
         setuser ({
         
@@ -49,7 +51,7 @@ function Login() {
         navigate("/")
         storedToken(res_data.token)
       }else{
-        alert(res_data.extraDetails ? res_data.extraDetails : res_data.message);
+        toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
       }
     }catch(error){
 

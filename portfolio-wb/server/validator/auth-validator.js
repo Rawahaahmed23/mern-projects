@@ -32,5 +32,4 @@ const signupSchema = loginschema.extend({
 });
 
 
-
-module.exports = {signupSchema,loginschema};
+module.exports = { signupSchema, loginschema };

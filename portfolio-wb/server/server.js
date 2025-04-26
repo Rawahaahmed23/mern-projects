@@ -13,7 +13,7 @@ const authRoute = require("./router/auth-router")
 const contactRoute = require("./router/contact-router")
 const ServiceRoute = require ('../server/router/service-router')
 
-const errorMiddleware = require('./middleware/error-middleware')
+const errorMiddleware = require('../server/middleware/error-middleware')
 
 
 const corsoption ={
@@ -32,7 +32,7 @@ app.use(express.json()); // JSON middleware enable karei
 app.use("/api/router", authRoute)
 app.use('/api/form', contactRoute)
 app.use('/api/data', ServiceRoute)
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 const Port = 5000
 
 

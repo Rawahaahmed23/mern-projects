@@ -38,7 +38,11 @@ function Services() {
 <div className="container flex flex-row justify-center items-center gap-20 p-5 m-5  ">
   {contactOBj.map((service,index)=>(
 
-<div  key={index} className="box  w-[22rem] bg-gray-200 rounded-2xl p-5 flex flex-col justify-start items-start">
+<div  
+  key={index} 
+  className="box w-[22rem] bg-gray-200 rounded-2xl p-5 flex flex-col justify-start items-start 
+  hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"
+>
   <div className={`image w-[60px] flex items-center justify-center h-[60px] ${service.bgColor} rounded-full p-2 m-3`}>
     {service.icon}
   </div>

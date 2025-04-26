@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/auth';
+import { toast } from 'react-toastify';
 
 function Register() {
   const [user, setuser] = useState({
@@ -37,12 +38,12 @@ const navigate = useNavigate()
 
   
       const res_data = await response.json()
-     console.log(res_data.message);
+     console.log(res_data.extraDetails);
      
       
       if(response.ok){
         
-       
+        toast.success('Register sucessful')
         localStorage.setItem("token",res_data.token)
             
         setuser ({
@@ -59,7 +60,7 @@ const navigate = useNavigate()
         
        
       }else{
-        alert(res_data.extraDetails ? res_data.extraDetails :res_data.message)
+        toast.error(res_data.extraDetails ? res_data.extraDetails :res_data.message)
       
       }
 
