@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import { CgWebsite } from "react-icons/cg";
 import { FaCode } from "react-icons/fa";
 import { SiTwinmotion } from "react-icons/si";
+import Website from "./website";
+import AI from "./ai";
+import Animation from "./animation";
 
 function Portfolio() {
-  const [active, setActive] = useState(null);
+     
+  
+ const [select , selectTab]= useState('website')
 
   return (
     <>
@@ -20,55 +25,40 @@ function Portfolio() {
           <ul className="flex flex-row justify-center items-center text-xl gap-50 list-none">
 
             {/* Websites */}
-            <li
-              onClick={() => setActive("website")}
-              className={`relative group hover:cursor-pointer text-lg font-bold flex flex-col items-center gap-2 transition-colors duration-300
-                ${active === "website" ? "text-blue-600" : "text-gray-700"}
-                hover:text-blue-500
-              `}
-            >
-              <CgWebsite className="text-3xl" />
+            <li className={`relative group text-lg font-bold flex flex-col items-center gap-2 transition-colors duration-300 hover:text-blue-500 ${
+              selectTab === 'website'?'text-blue-500':'text-gray-800 hover:text-blue-500'
+            }`}   onClick={()=>selectTab("website")}>
+              <CgWebsite className="text-3xl"  />
               <span>Websites</span>
-              <div
-                className={`h-1 w-0 bg-blue-500 group-hover:w-full transition-all duration-300
-                ${active === "website" ? "w-full" : ""}
-              `}></div>
             </li>
 
             {/* Artificial Intelligence */}
-            <li
-              onClick={() => setActive("ai")}
-              className={`relative group hover:cursor-pointer text-lg font-bold flex flex-col items-center gap-2 transition-colors duration-300
-                ${active === "ai" ? "text-green-600" : "text-gray-700"}
-                hover:text-green-500
-              `}
-            >
+            <li className={`relative group text-lg font-bold flex flex-col items-center gap-2 transition-colors duration-300 hover:text-blue-500 ${
+              selectTab === 'AI'?'text-blue-500':'text-gray-800 hover:text-blue-500'
+            }`}
+            onClick={()=>selectTab("AI")}>
               <FaCode className="text-3xl" />
               <span>Artificial Intelligence</span>
-              <div
-                className={`h-1 w-0 bg-green-500 group-hover:w-full transition-all duration-300
-                ${active === "ai" ? "w-full" : ""}
-              `}></div>
             </li>
 
             {/* Animations */}
-            <li
-              onClick={() => setActive("animation")}
-              className={`relative group hover:cursor-pointer text-lg font-bold flex flex-col items-center gap-2 transition-colors duration-300
-                ${active === "animation" ? "text-pink-600" : "text-gray-700"}
-                hover:text-pink-500
-              `}
-            >
+            <li className={`relative group text-lg font-bold flex flex-col items-center gap-2 transition-colors duration-300 hover:text-blue-500 ${
+              selectTab === 'Animation'?'text-blue-500':'text-gray-800 hover:text-blue-500'
+            }`}
+            onClick={()=> selectTab("Animation")}>
               <SiTwinmotion className="text-3xl" />
               <span>Animations</span>
-              <div
-                className={`h-1 w-0 bg-pink-500 group-hover:w-full transition-all duration-300
-                ${active === "animation" ? "w-full" : ""}
-              `}></div>
             </li>
-
-          </ul>
+          
+          </ul> 
         </div>
+
+        <div className="">
+          {select === 'website'&& <Website />}
+          {select === 'AI'&& <AI />}
+          {select === 'Animation'&& <Animation />}
+        </div>
+        
       </main>
     </>
   );

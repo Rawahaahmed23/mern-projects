@@ -2,6 +2,7 @@ import Services from "../component/Services"
 import Service from "./Service"
 import Skills from "../component/skills"
 import Portfolio from "../component/portfolio"
+import Website from "../component/website"
 import { useAuth } from "../store/auth"
 
 function Home() {
@@ -36,6 +37,7 @@ function Home() {
       <Skills />
       <Services />
       <Portfolio />
+      {/* <Website /> */}
     
     </>
   )
