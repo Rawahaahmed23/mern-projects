@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
-
+const jwt = require('jsonwebtoken');
 
 
 const userSchema = new  mongoose.Schema({
@@ -48,6 +48,19 @@ userSchema.methods.comparePassword= async function (password) {
 }
 
 
+userSchema.methods.gernerateToken = async function () {
+    return jwt.sign({
+      user_id: this._id.toString(),
+      email: this.email,
+      isadmin: this.isAdmin
+    },
+    process.env.JWT_SELECT_KEY,{
+      expiresIn:"30d",
+
+    })
+  
+
+}
 
 
 

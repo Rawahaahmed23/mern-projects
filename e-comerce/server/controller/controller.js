@@ -14,9 +14,14 @@ const register = async(req,res,next)=>{
      }
    
      const userCreated = await User.create({username,email,password,phone})
-     res.status(200).json({
-      msg:'register sucessful'
+     res.status(200).json({ 
+      msg:'register sucessful',
+      token: await userCreated.gernerateToken(),
+      user_id: userCreated._id.toString()
      })
+ 
+
+
 
   }catch(error){
     console.log(error);
@@ -34,7 +39,12 @@ const login = async(req,res)=>{
       }
       const isPasswordValid = await userExist.comparePassword(password)
       if(isPasswordValid){
-         res.status(200).json({msg:'login Sucessful'})
+         res.status(200).json({ 
+            msg:'login sucessful',
+            token: await userExist.gernerateToken(),
+            user_id: userExist._id.toString()
+           })
+         
       }else {
          res.status(400).json({ msg: 'invalid credentials' });
      }
