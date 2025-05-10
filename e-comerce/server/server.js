@@ -9,7 +9,7 @@ const connectDB = require('./utils/db');
 // Your other requires and code...
 
 connectDB();
-app.use(express.json());
+app.use(express.json()); // JSON middleware enable karei
 
 const Port = 5000
 
