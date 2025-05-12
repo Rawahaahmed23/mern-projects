@@ -1,14 +1,14 @@
-// error-middleware.js में सुधारें
-const errorMiddleware = async (err, req, res, next) => {
+const errorMiddleware = (err, req, res, next) => {
   const status = err.status || 500;
   const message = err.message || 'Backend error';
-  const extraDetails = err.extraDetails || 'Error from backend';
+ 
+  
+  const extraDetails = err.extraDetails || 'Something went wrong';
 
   return res.status(status).json({
-    status,
-    message, 
-    extraDetails
+   message , extraDetails
   });
 };
+
 
 module.exports = errorMiddleware

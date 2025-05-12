@@ -2,7 +2,7 @@ const validate = (schema) => async (req, res, next) => {
   try {
     const parsedBody = await schema.parseAsync(req.body);
     req.body = parsedBody;
-    next(); // Ye zaroori hai warna request aage nahi jayegi
+    next(); 
   } catch (err) {
    
     const status = 422;
@@ -16,6 +16,7 @@ const validate = (schema) => async (req, res, next) => {
       
     }
     next(error)
+  
   }
 };
 
