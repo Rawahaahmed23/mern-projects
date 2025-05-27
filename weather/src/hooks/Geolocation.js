@@ -1,9 +1,8 @@
-
 import { useEffect, useState } from "react";
 
 export function useGeolocation() {
   const [locationData, setLocationData] = useState({
-    COrdinnate: null,
+    coordinate: null,
     error: null,
     isLoading: true,
   });
@@ -13,23 +12,22 @@ export function useGeolocation() {
 
     if (!navigator.geolocation) {
       setLocationData({
-        COrdinnate: null,
+        coordinate: null,
         error: "Geolocation is not supported by browser",
         isLoading: false,
       });
       return;
     }
 
-    // === FIXED HERE ===
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLocationData({
-          COrdinnate: {
+          coordinate: {
             lat: position.coords.latitude,
             lon: position.coords.longitude,
           },
           error: null,
-          isLoading: false,  // was null, should be false
+          isLoading: false,
         });
       },
       (error) => {
@@ -51,15 +49,15 @@ export function useGeolocation() {
         }
 
         setLocationData({
-          COrdinnate: null,
+          coordinate: null,
           error: errorMessage,
           isLoading: false,
         });
       },
       {
-        enableHighAccuracy: true, // fixed typo (was enableHightacuressy)
+        enableHighAccuracy: true,
         timeout: 5000,
-        maximumAge: 0, // fixed typo (was maximumage)
+        maximumAge: 0,
       }
     );
   };

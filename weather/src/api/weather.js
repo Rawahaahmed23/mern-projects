@@ -1,10 +1,10 @@
-import { APi_config } from "./config"
+import { ApiConfig } from "./config"
 
 class WeatherAPi{
     #createUrl(endPoint,params){
       
       const searchParams = new URLSearchParams({
-           appid:APi_config.API_Key,
+           appid:ApiConfig.APIKey,
            ...params
       })
         return `${endPoint}?${searchParams.toString()}`
@@ -20,30 +20,34 @@ class WeatherAPi{
   }
 
     async getCurrentWeather ({lat,lon}){
-         const url = this.#createUrl(`${APi_config.BaseURl}/weather`,{
+         const url = this.#createUrl(`${ApiConfig.BaseURL}/weather`,{
               lat:lat.toString(),
               lon:lon.toString(),
-              units: APi_config.Default_PARAMS.units,
+              units: ApiConfig.DefaultParams.units,
          })
          return this.#fetchData(url)
       
     }    
     async getForcast ({lat,lon}){
-            const url = this.#createUrl(`${APi_config.BaseURl}/forcastData`,{
+
+            const url = this.#createUrl(`${ApiConfig.BaseURL}/forecast`,{
               lat:lat.toString(),
               lon:lon.toString(),
-              units: APi_config.Default_PARAMS.units,
+              units: ApiConfig.DefaultParams.units,
+             
          })
          return this.#fetchData(url)
         
-    }   async reverseGetCOde({lan,lot}){
-            const url = this.#createUrl(`${APi_config.BaseURl}/Geocode`,{
-              lat:lat.toString(),
-              lon:lon.toString(),
-              units: APi_config.Default_PARAMS.units,
-         })
-         return this.#fetchData(url)
-    }
+    } 
+    
+    async reverseGetCOde({ lat, lon }) {
+  const url = this.#createUrl(`${ApiConfig.GeoCoding}/reverse`, {
+    lat: lat.toString(),
+    lon: lon.toString(),
+    limit:1,  
+  })
+  return this.#fetchData(url)
+}
 }
 
-export const WeatherAPi =  new WeatherAPi()
+export const WeatherApiInstance =  new WeatherAPi()

@@ -7,12 +7,7 @@
   --border: #e0e0e0;
 }
 
-.dark {
-  --background: #121212;
-  --foreground: #ffffff;
-  --muted: #2a2a2a;
-  --border: #444444;
-}
+
 
 body {
   background-color: var(--background);
