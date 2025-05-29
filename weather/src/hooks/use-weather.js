@@ -1,10 +1,13 @@
 import { useQuery } from "@tanstack/react-query"
 import { WeatherApiInstance } from "@/api/weather"
 
+
+
 export const weather_Key = {
   weather: (coords) => ["weather", coords],
   forecast: (coords) => ["forecast", coords],
   location: (coords) => ["location", coords],
+  search: (query) => ["location-search", query],
 }
 
 export function useWeatherQuery(coordinate) {
@@ -32,4 +35,12 @@ export function useGeoReverseQuery(coordinate) {
       coordinate ? WeatherApiInstance.reverseGetCOde(coordinate) : null,
     enabled: !!coordinate,
   });
+}
+
+export function useLocationSearch(query){
+  return useQuery({
+    queryKey: weather_Key.search(query),
+    queryFn: () => WeatherApiInstance.SearchLocations({query}),
+    enabled:query.length >=3,
+  })
 }

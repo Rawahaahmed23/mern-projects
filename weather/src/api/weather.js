@@ -47,7 +47,15 @@ class WeatherAPi{
     limit:1,  
   })
   return this.#fetchData(url)
+}    
+ async SearchLocations({ query }) {
+  const url = this.#createUrl(`${ApiConfig.GeoCoding}/direct`, {
+    q: query,
+    limit: "5",
+  });
+  return this.#fetchData(url);
 }
 }
+
 
 export const WeatherApiInstance =  new WeatherAPi()

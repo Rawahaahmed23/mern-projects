@@ -14,6 +14,7 @@ import CurrentWeather from "./CurrentWeather";
 import Hourly from "@/components/hourly";
 import WeatherDetails from "@/components/WeatherDetails";
 import WeatherForcast from "@/components/Forcast";
+import Favorite from "@/components/Favorite";
 
 function WeatherDashboard() {
   const {
@@ -107,6 +108,7 @@ console.log("locationQuery.data[0]:", locationQuery.data?.[0]);
   }
   return (
     <div className="space-y-4">
+      <Favorite />
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold tracking-tight">My location</h1>
         <Button

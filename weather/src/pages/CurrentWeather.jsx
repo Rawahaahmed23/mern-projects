@@ -18,15 +18,15 @@ function CurrentWeather({ data, locationName }) {
           <div className="space-y-4">
             <div className="space-y-2">
               <div className="flex items-center gap-1">
-                <h2 className="text-2xl font-bold">{locationName?.name}</h2>
-                {locationName.state && (
+                <h2 className="text-2xl font-bold">{location.name}</h2>
+                {location.state && (
                   <span className="text-muted-foreground">
-                    , {locationName.state}
+                    , {location.state}
                   </span>
                 )}
               </div>
               <p className="text-sm text-muted-foreground">
-                {locationName.country}
+                {location.country}
               </p>
             </div>
 
