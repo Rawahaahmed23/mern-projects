@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
    
   },
   phone:{
-   type:Number,
+   type:String,
     required: true,
   },
   isActive: {               
@@ -38,7 +38,9 @@ const userSchema = new mongoose.Schema({
   isOnline: {
   type: Boolean,
   default: false
-}
+},
+  lastLogin: { type: Date },  
+
  
 });
 
@@ -46,9 +48,9 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save', async function (next) {
   const user = this;
 
-  if (!user.isModified) {
-    return next();
-  }
+ if (!user.isModified('password')) {
+  return next();
+}
 
   try {
     const salt = await bcrypt.genSalt(10);

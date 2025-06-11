@@ -54,7 +54,7 @@ await userExist.save();
         
       });
     } else {
-      return res.status(401).json({ message: "Incorrect email or password" });
+      return res.status(401).json({ message: "Invalid Email and password" });
     }
   } catch (error) {
     console.log(error);
@@ -65,9 +65,10 @@ await userExist.save();
 
 const user = async (req,res,next)=>{
   try{
-
+    
     const userData = req.user
-        return res.status(200).json({userData})
+    console.log(userData); 
+        return res.status(200).json(userData.recentLogins); 
   }  catch(error){
     res.status(400).json({msg:'internal server errro'})
   }  

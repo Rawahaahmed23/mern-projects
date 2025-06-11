@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import {toast } from 'react-toastify';
+
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../store/auth';
+
 
 const SignupPage = () => {
+
+
   const [user, setUser] = useState({
     username: '',
     email: '',
     password: '',
      phone: ''
   });
+
+
+const { storedTokenINS } = useAuth();
+
   const Navigate = useNavigate(); // ✅ VAL
   const handleChange = (e) => {
         e.preventDefault()
@@ -36,7 +45,9 @@ const SignupPage = () => {
       
       if(response.ok){
          toast.success('Register sucessful')
-        setUser({
+        storedTokenINS(data.token)
+        
+         setUser({
            username: '',
     email: '',
     password: '',
@@ -44,7 +55,7 @@ const SignupPage = () => {
         })
         Navigate('/login')
        }else{
-             toast.error(data?.extraDetails?.message || data?.massage)
+             toast.error(data?.extraDetails?.message || data?.massage)  
        }
    
     } catch (error) {

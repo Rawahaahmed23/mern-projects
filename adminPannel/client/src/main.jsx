@@ -4,9 +4,10 @@ import './index.css'
 import App from './App.jsx'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Authprovide } from './store/auth';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <Authprovide>  <StrictMode>
     <App />
     <ToastContainer
 position="top-right"
@@ -23,4 +24,6 @@ theme="dark"
 />
 
   </StrictMode>,
+  </Authprovide>
+
 )
