@@ -9,4 +9,7 @@ Route.route('/register').post(validate(signupSchema),main.register);
 Route.route('/login').post(validate(loginSchema),main.login);
 Route.route('/users').get(authMiddleWare ,main.user);
 
+
+
+
 module.exports = Route;

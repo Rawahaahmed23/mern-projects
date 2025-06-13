@@ -12,7 +12,7 @@ const adminMiddleware = async (req, res, next) => {
 
     next();
   } catch (error) {
-    next(error); // Typo fixed
+    return next(error); // Typo fixed
   }
 };
 

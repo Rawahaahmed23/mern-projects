@@ -1,0 +1,104 @@
+// models/Employee.js
+const mongoose = require('mongoose');
+ const bcrypt = require('bcryptjs')
+
+const attendanceSchema = new mongoose.Schema({
+  date: {
+    type: Date,
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ['On Time', 'Late', 'Absent'],
+    required: true
+  },
+  checkInTime: {
+    type: String, // Format: HH:mm
+    default: null
+  },
+  checkOutTime: {
+    type: String, // Format: HH:mm
+    default: null
+  }
+});
+
+const employeeSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  role: {
+    type: String,
+    required: true
+  },
+  phoneNumber: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+ 
+
+    profileImage: {
+    public_id: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+  },
+  totalAttendance: {
+    type: Number,
+    default: 0
+  },
+  avgCheckInTime: {
+    type: String // Format: HH:mm
+  },
+  avgCheckOutTime: {
+    type: String // Format: HH:mm
+  },
+password: {
+  type: String,
+  required: true,
+
+},
+  attendanceHistory: [attendanceSchema]
+}, {
+  timestamps: true
+});
+
+
+
+employeeSchema.pre('save', async function (next) {
+  try {
+    const user = this;
+
+    if (!user.isModified('password')) {
+      return next();
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(user.password, salt);
+
+    user.password = hash; // ✅ Assignment correct kiya
+
+    next();
+  } catch (error) {
+    console.log(error);
+    next(error); 
+  }
+});
+employeeSchema.methods.comparePassword = async function(password){
+    return bcrypt.compare(password,this.password)
+
+}
+
+
+const User = mongoose.model('Employee', employeeSchema);
+
+module.exports = User
