@@ -1,6 +1,7 @@
 // models/Employee.js
 const mongoose = require('mongoose');
  const bcrypt = require('bcryptjs')
+ var jwt = require('jsonwebtoken');
 
 const attendanceSchema = new mongoose.Schema({
   date: {
@@ -67,6 +68,14 @@ password: {
   required: true,
 
 },
+checkInLimit: {
+  type: Date, // HH:mm format
+    default: () => {
+    const now = new Date();
+    now.setHours(9, 0, 0, 0); // Set time to 09:00 AM
+    return now;
+  }
+},
   attendanceHistory: [attendanceSchema]
 }, {
   timestamps: true
@@ -90,7 +99,7 @@ employeeSchema.pre('save', async function (next) {
     next();
   } catch (error) {
     console.log(error);
-    next(error); 
+  
   }
 });
 employeeSchema.methods.comparePassword = async function(password){
@@ -98,6 +107,28 @@ employeeSchema.methods.comparePassword = async function(password){
 
 }
 
+
+
+employeeSchema.methods.generateToken =async function () {
+  try{
+
+    return jwt.sign({
+      userId: this._id,
+      email: this.email,
+      isAdmin: this.isAdmin
+    },process.env.JWT_SELECT_KEY,{
+      expiresIn: '30d'
+    }
+  
+   )
+
+    
+  }catch(error){
+     console.log(error);
+     
+  }
+  
+}
 
 const User = mongoose.model('Employee', employeeSchema);
 
