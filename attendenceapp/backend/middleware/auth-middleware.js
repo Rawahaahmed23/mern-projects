@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../model/userSchema');
 const authMiddleware = async(req,res,next)=>{
  
-   const token = req.header("Authorization");
+    const token = req.cookies.token;
    if(!token){
     return res.status(400).json({msg:'token missing'})
    }
@@ -22,7 +22,8 @@ const authMiddleware = async(req,res,next)=>{
         next()
 
    }catch(error){
-  res.status(400).json({msg:'repsonse'})
+  console.log(error);
+  
    
    }
 

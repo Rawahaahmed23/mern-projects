@@ -3,6 +3,8 @@ const User = require("../model/userSchema");
 
 const register = async (req, res, next) => {
   try {
+
+    
     const {
       name,
       role,
@@ -15,7 +17,7 @@ const register = async (req, res, next) => {
 
     const userExist = await User.findOne({ email });
     if (userExist) {
-      return res.status(400).json({ msg: "User already exists" });
+      return res.status(400).json({ message: "User already exists" });
     }
 
     const uploadResult = await cloudinary.uploader.upload(profileImage, {
@@ -50,47 +52,65 @@ if (typeof checkInLimit === "string" && checkInLimit.includes(":")) {
     });
 
     res.status(200).json({
-      msg: "registration Sucessful",
+      message: "registration Sucessful",
       token: await userCreate.generateToken(),
       userId: userCreate._id.toString(),
     });
   } catch (error) {
-    console.log(error);
+   next(error)
   }
 };
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const validemail = await User.findOne({ email });
+
     if (!validemail) {
-      res.status(200).json({ msg: "Unauhterized email" });
+      return res.status(401).json({ message: "Unauthorized email" });
     }
+
     const compare = await validemail.comparePassword(password);
-    if (compare) {
-      return res.status(200).json({
-        msg: "Login Sucessful",
-        token: await validemail.generateToken(),
-        userId: validemail._id.toString(),
-      });
+
+    if (!compare) {
+      return res.status(401).json({ message: "Invalid password" });
     }
+
+    const token = await validemail.generateToken();
+
+    // Cookie set karo
+    res.cookie("token", token, {
+      httpOnly: true, // prevent JS access (security)
+      secure: process.env.NODE_ENV === "production", // only HTTPS in production
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    return res.status(200).json({
+      message: "Login Successful",
+      userId: validemail._id.toString(),
+    });
+
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
 
 const user = async (req, res) => {
   try {
     const loggedInUser = req.user;
 
     const getuser = await User.findById(loggedInUser._id).select("-password");
-
-    console.log(getuser);
+   
+    
+    
 
     res.status(200).json({ user: getuser });
   } catch (error) {
     console.error("User route error:", error);
-    res.status(500).json({ msg: "Server error" });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -101,31 +121,23 @@ const checkIn = async (req, res) => {
     const userID = req.user._id;
     const user = await User.findById(userID);
     if (!user) {
-      res.status(500).json({ msg: "user not found" });
+      return res.status(500).json({ message: "User not found" });
     }
 
     const today = new Date();
- const hours = String(today.getHours()).padStart(2, "0");
-const minutes = String(today.getMinutes()).padStart(2, "0");
-
-    const todayDate = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate()
-    ); // ✅ correct
+    const hours = String(today.getHours()).padStart(2, "0");
+    const minutes = String(today.getMinutes()).padStart(2, "0");
     const todaystr = today.toISOString().split("T")[0];
-    console.log(todayDate);
-    const cheakinTime = user.checkInLimit;
 
-    const alreadyCHeakin = user.attendanceHistory.find((a) => {
+    const alreadyCheckIn = user.attendanceHistory.find((a) => {
       const d = new Date(a.date).toISOString().split("T")[0];
-      return d == todaystr;
+      return d === todaystr;
     });
 
-     if(alreadyCHeakin){
-      res.status(400).json({msg:'Already cheak in Today '})
+    // if (alreadyCheckIn) {
+    //   return res.status(400).json({ message: "Already checked in today" });
+    // }
 
-     }
     const checkInLimit = new Date(user.checkInLimit);
     checkInLimit.setFullYear(today.getFullYear());
     checkInLimit.setMonth(today.getMonth());
@@ -133,19 +145,15 @@ const minutes = String(today.getMinutes()).padStart(2, "0");
 
     const isLate = today > checkInLimit;
     const status = isLate ? "Late" : "On Time";
-
-const checkInTime = `${hours}:${minutes}`;
+    const checkInTime = `${hours}:${minutes}`;
 
     user.attendanceHistory.push({
       date: today,
       status,
-      checkInTime: cheakinTime,
+      checkInTime,
     });
 
-   
-
     user.totalAttendance += 1;
-
 
     await user.save();
 
@@ -156,9 +164,9 @@ const checkInTime = `${hours}:${minutes}`;
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Server error" });
   }
-};
-
+}
 
 
 
@@ -181,7 +189,7 @@ const cheakout = async (req, res) => {
     const todayDate = today.toISOString().split("T")[0];
 
     if (!user) {
-      return res.status(400).json({ msg: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
 
     const todayAttendance = user.attendanceHistory.find((a) => {
@@ -190,11 +198,11 @@ const cheakout = async (req, res) => {
     });
 
     if (!todayAttendance) {
-      return res.status(400).json({ msg: "Please check in first" });
+      return res.status(400).json({ message: "Please check in first" });
     }
 
     if (todayAttendance.checkOutTime) {
-      return res.status(400).json({ msg: "Already checked out today" });
+      return res.status(400).json({ message: "Already checked out today" });
     }
 
     todayAttendance.checkOutTime = currentTime;
@@ -202,7 +210,7 @@ const cheakout = async (req, res) => {
     await user.save();
 
     res.status(200).json({
-      msg: "Check-out successful",
+      message: "Check-out successful",
       checkOutTime: currentTime,
     });
   } catch (error) {
@@ -211,5 +219,20 @@ const cheakout = async (req, res) => {
 };
 
 
+const Logout = async(req,res)=>{
+  try{
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production", // localhost ke liye false chalega
+  });
+  res.status(200).json({ message: "Logout successful" });
+  }catch(error){
+console.log(error);
 
-module.exports = { register, login, user, checkIn, cheakout };
+  }
+}
+
+
+
+module.exports = { register, login, user, checkIn, cheakout,Logout };

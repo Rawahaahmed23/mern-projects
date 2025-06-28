@@ -31,6 +31,7 @@ export const Authprovide = ({ children }) => {
 
       if (response.ok) {
         const data = await response.json();
+    console.log(data);
     
 
         setUser(data);
@@ -42,7 +43,7 @@ export const Authprovide = ({ children }) => {
   };
   useEffect(() => {
   userAuthentication();
-});
+},[]);
   return (
     <AuhtContext.Provider
       value={{ storedTokenINS, Logoutuser, isLogin, user ,AuthrizationToken}}
