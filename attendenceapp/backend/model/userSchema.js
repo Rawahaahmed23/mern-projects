@@ -14,11 +14,11 @@ const attendanceSchema = new mongoose.Schema({
     required: true
   },
   checkInTime: {
-    type: String, // Format: HH:mm
+    type: String, 
     default: null
   },
   checkOutTime: {
-    type: String, // Format: HH:mm
+    type: String, 
     default: null
   }
 });
@@ -57,10 +57,10 @@ const employeeSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  avgCheckInTime: {
+  checkInTime: {
     type: String // Format: HH:mm
   },
-  avgCheckOutTime: {
+  checkOutTime: {
     type: String // Format: HH:mm
   },
 password: {
@@ -69,12 +69,11 @@ password: {
 
 },
 checkInLimit: {
-  type: Date, // HH:mm format
-    default: () => {
-    const now = new Date();
-    now.setHours(9, 0, 0, 0); // Set time to 09:00 AM
-    return now;
-  }
+  type: String, 
+   required: true,
+
+      
+ 
 },
   attendanceHistory: [attendanceSchema]
 }, {

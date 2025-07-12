@@ -1,55 +1,76 @@
 
+import Cookies from "js-cookie";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export const UserContext = createContext();
 
+
+
+
+
+
+
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState() 
+const [loading, setLoading] = useState(true); 
 
   const isLogin = !!user;
 
-const Logout = async () => {
-  try {
-    await fetch("http://localhost:5000/logout", {
-      method: "POST",
-      credentials: "include", // cookie bhejne ke liye
-    });
-    setUser(null); // context se user hata do
-  } catch (error) {
-    console.error("Logout failed", error);
+
+  const saveToken =async (serverToken)=>{
+    try{
+      Cookies.set('token', serverToken, { expires: 7 })
+    }catch(error){
+      console.log(error);
+      
+    }
   }
+
+const Logout = async (serverToken) => {
+try{
+  const savetoken = Cookies.remove('token') 
+}catch(error){
+
+}
 };
 
-  useEffect(() => {
-    const userAuthentication = async (e) => {
-      
-      try {
-        const response = await fetch("http://localhost:5000/user", {
-          method: "GET",
-          credentials: "include", // 👈 required to send cookies
-        });
 
-        if (response.ok) {
-          const data = await response.json();
-           setUser(data.user);
-   
-        } 
-      } catch (error) {
-        console.log("User fetch failed", error);
+useEffect(() => {
+  const userAuthentication = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/user", {
+        method: "GET",
+        credentials: "include",
+      });
 
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
       }
-    };
+    } catch (error) {
+      console.log("User fetch failed", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    
+  userAuthentication(); 
 
-    userAuthentication();
-  }, []);
+  const timer = setTimeout(() => {
+    userAuthentication(); 
+  }, 2000);
 
-  return (
-    <UserContext.Provider value={{ user, Logout, isLogin,setUser }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return () => clearTimeout(timer);
+}, []);
+
+
+
+return (
+  <UserContext.Provider value={{ user, Logout, isLogin,setUser, loading,saveToken }}>
+    {children}
+  </UserContext.Provider>
+);
+
 };
 
 export const useAuth = () => {

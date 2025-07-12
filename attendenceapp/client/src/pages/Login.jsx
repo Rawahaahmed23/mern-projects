@@ -16,8 +16,8 @@ function Login() {
     password: "",
   })
 
- const { setUser } = useAuth();
-
+ 
+const { setUser,saveToken} = useAuth();
   const Navigate = useNavigate()
   
   const [showPassword, setShowPassword] = useState(false)
@@ -45,9 +45,17 @@ function Login() {
       
 
       const responseData = await response.json() 
-    
+      
 
       if (response.ok) {
+        setUser(responseData)
+    
+            saveToken(responseData.token)
+        Navigate("/")
+
+      setTimeout(() => {
+        window.location.reload()
+      }, 100) // slight delay to allow navigation before reload
       toast.success(responseData.message || "Login successful")
  
  
@@ -64,6 +72,8 @@ function Login() {
         setIsLoading(false)
       }
   }
+
+  
 
   return (
 <div className="relative w-screen h-screen flex items-center justify-center overflow-hidden">
