@@ -51,7 +51,8 @@ const register = async (req, res, next) => {
       userId: userCreate._id.toString(),
     });
   } catch (error) {
-   next(error)
+ console.log(error);
+ 
   }
 };
 const login = async (req, res) => {

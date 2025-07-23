@@ -68,7 +68,8 @@ function Register() {
       })
 
       const cloudData = await res.json()
-
+       console.log(cloudData);
+       
       // Step 2: Send form to backend
       const finalData = {
         ...data,

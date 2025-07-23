@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Home from './pages/Home'
 import { UserProvider } from './store/useAuth'
 import Logout from './pages/Logout'
+import Admin from './pages/admin'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
    <Route path="/register" element={<Register />} />
    <Route path="/login" element={<Login />} />
    <Route path="/logout" element={<Logout />} />
+   <Route path='/admin' element={<Admin />}></Route>
 
    <Route path="/" element={<Home />} />
      </Routes>

@@ -74,6 +74,10 @@ checkInLimit: {
 
       
  
+},isAdmin:{
+  type:Boolean,
+  default: false
+
 },
   attendanceHistory: [attendanceSchema]
 }, {

@@ -17,6 +17,7 @@ import {
 } from "lucide-react"
 import { useAuth } from "@/store/useAuth"
 import Cookies from "js-cookie"
+import { useNavigate } from "react-router-dom"
 import { data, NavLink } from "react-router-dom"
 
 export default function Home() {
@@ -25,8 +26,9 @@ export default function Home() {
   const [isCheckedIn, setIsCheckedIn] = useState(false)
   const [checkIn, setCheckIn] = useState("")
   const [checkOut, setCheckOut] = useState("")
-const { user, setUser } = useAuth();
+const { user, setUser, } = useAuth();
 
+const {isLogin} = useAuth()
 
 
 
@@ -71,7 +73,13 @@ if (response.ok) {
   }
 
 
+const navigate = useNavigate();
 
+useEffect(() => {
+  if (!isLogin) {
+    navigate("/"); 
+  }
+}, [user, navigate]);
 
 
 

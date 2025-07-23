@@ -22,12 +22,14 @@ app.use(cors(corsoption))
 app.use(express.json());
 const errormiddleware = require('./middleware/errormiddleware')
 const authRoute = require('./router/auth')
+const adminRoute = require('./router/adminRoutes')
 const connecdb = require('./utils/db')
 
 
 
 const Port = 5000
 app.use('/',authRoute)
+app.use('/admin', adminRoute)
 
 app.use(errormiddleware)
 
