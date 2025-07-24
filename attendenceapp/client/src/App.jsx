@@ -5,7 +5,7 @@ import Login from './pages/Login'
 import Home from './pages/Home'
 import { UserProvider } from './store/useAuth'
 import Logout from './pages/Logout'
-import Admin from './pages/admin'
+import Admin from './pages/Admin'
 
 function App() {
   return (
