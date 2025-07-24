@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+
 // Table components will be built inline
 import {
   Dialog,
@@ -110,16 +110,8 @@ export default function UserManagementPage() {
         </CardHeader>
         <CardContent className="p-6">
           <div className="flex justify-between mb-6">
-            <Input 
-              placeholder="Search users..." 
-              className="max-w-sm bg-gray-800 border-gray-600 text-white placeholder-gray-400 focus:border-sky-500 focus:ring-sky-500" 
-            />
-            <Button 
-              size="sm" 
-              className="bg-sky-500 hover:bg-sky-600 text-white font-medium px-4 py-2"
-            >
-              Add User
-            </Button>
+          
+            
           </div>
 
           <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700">

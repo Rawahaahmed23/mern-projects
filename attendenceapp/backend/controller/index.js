@@ -127,9 +127,9 @@ const checkIn = async (req, res) => {
       return entryDate === todayDate;
     });
 
-    // if (alreadyCheckedIn) {
-    //   return res.status(400).json({ message: "Already checked in today" });
-    // }
+    if (alreadyCheckedIn) {
+      return res.status(400).json({ message: "Already checked in today" });
+    }
 
     const checkInLimit = user.checkInLimit; // default if not set
     const isLate = currentTime > checkInLimit;

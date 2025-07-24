@@ -148,8 +148,8 @@ useEffect(() => {
 
           <NavLink  to="/logout" >
 
-          <Button variant="outline" className="bg-red-600 hover:bg-red-700 border-red-600 text-white">
-            <LogOut className="w-4 h-4 mr-2" />
+          <Button variant="outline" className="bg-[#292C2D] hover:bg-red-700 border-red-600 text-white">
+            <LogOut className="w-4 h-4 mr-2 " />
             Log Out
           </Button>
           </NavLink>
@@ -269,25 +269,35 @@ useEffect(() => {
         </div>
 
         {/* Attendance Records */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          {user?.attendanceHistory?.slice(0, 6).map((record, index) => (
-            <Card key={index} className="bg-[#292c2d] border-gray-700">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <Calendar className="w-5 h-5 text-gray-400" />
-                  <span className="text-white font-medium">{record.date}</span>
-                  <Badge
-                    className={`ml-auto ${
-                      record.status === "On Time"
-                        ? "bg-green-200 text-[#4EFECC]"
-                        : record.status === "Late"
-                          ? "bg-yellow-500"
-                          : "bg-red-500"
-                    } text-white`}
-                  >
-                    {record.status}
-                  </Badge>
-                </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+  {user?.attendanceHistory
+    ?.slice()
+    .reverse() // Latest records sabse pehle
+    .slice(0, 6)
+    .map((record, index) => (
+      <Card key={index} className="bg-[#292c2d] border-gray-700">
+        <CardContent className="p-4">
+          <div className="flex items-center gap-3 mb-3">
+            <Calendar className="w-5 h-5 text-gray-400" />
+            <span className="text-white font-medium">
+  {new Date(record.date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  })}
+</span>
+            <Badge
+              className={`ml-auto ${
+                record.status === "On Time"
+                  ? "bg-green-200 text-[#4EFECC]"
+                  : record.status === "Late"
+                    ? "bg-yellow-500"
+                    : "bg-red-500"
+              } text-white`}
+            >
+              {record.status}
+            </Badge>
+          </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
