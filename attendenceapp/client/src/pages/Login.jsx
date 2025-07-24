@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { HexagonBackground } from "@/components/animate-ui/backgrounds/hexagon"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/Input"
 import { Label } from "@/components/ui/Label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
