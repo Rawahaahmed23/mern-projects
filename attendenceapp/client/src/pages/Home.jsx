@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "../components/ui/button"
-import { Card, CardContent } from "../components/ui/card"
-import { Badge } from "../components/ui/badge"
+import { Avatar, AvatarImage } from "@/components/ui/Avatar"
+import { Button } from "../components/ui/Button"
+import { Card, CardContent } from "../components/ui/Card"
+import { Badge } from "../components/ui/Badge"
 import { toast } from "react-toastify"
 import {
   Calendar,

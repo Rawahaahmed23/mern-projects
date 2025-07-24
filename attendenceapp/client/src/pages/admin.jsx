@@ -1,14 +1,14 @@
 
 
 import { useState, useMemo, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/Card";
 
 // Table components will be built inline
 import {
@@ -17,14 +17,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
+} from "@/components/ui/Dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui/Select";
 
 const months = [
   { value: "01", label: "January" },
