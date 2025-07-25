@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { Avatar, AvatarImage } from "@/components/ui/Avatar"
 import { Button } from "../components/ui/button"
 import { Card, CardContent } from "../components/ui/card"
-import { Badge } from "../components/ui/Badge"
+import { Badge } from "../components/ui/badge"
 import { toast } from "react-toastify"
 import {
   Calendar,
@@ -10,13 +10,10 @@ import {
   LogOut,
   Phone,
   Mail,
-  Grid3X3,
-  List,
-  ArrowUpDown,
-  Filter,
+
 } from "lucide-react"
 import { useAuth } from "@/store/useAuth"
-import Cookies from "js-cookie"
+
 import { useNavigate } from "react-router-dom"
 import { data, NavLink } from "react-router-dom"
 
