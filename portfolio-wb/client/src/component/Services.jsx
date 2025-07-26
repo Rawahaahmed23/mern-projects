@@ -35,7 +35,7 @@ function Services() {
               <div className="h-1 w-20 bg-blue-500 mx-auto mt-2"></div>
    </header>
 
-<div className="container flex flex-row justify-center items-center gap-20 p-5 m-5  ">
+<div className="container flex flex-col justify-center items-center gap-20 p-5 m-5  lg:flex-row ">
   {contactOBj.map((service,index)=>(
 
 <div  

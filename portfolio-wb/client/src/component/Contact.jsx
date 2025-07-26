@@ -79,9 +79,9 @@ setContact({
               <div className="h-1 w-20 bg-blue-500 mx-auto mt-2"></div>
             </header>
                      
-            {/* Fixed the flex layout and width */}
+        
             <div className="flex flex-row w-[80%] h-[43rem] bg-white rounded-lg">
-              {/* Image container */}
+             
               <div className="w-full md:w-1/2 pr-0 md:pr-6 mb-6 md:mb-0">
                 <img
                   src="/contact2.jpg"
@@ -90,7 +90,7 @@ setContact({
                 />
               </div>
                          
-              {/* Form container */}
+          
               <div className="w-full md:w-1/2 p-10 mt-10">
                 <form className="space-y-6" onSubmit={handelSubmit}>
                   <div className="relative">
@@ -126,9 +126,9 @@ setContact({
                     ></textarea>
                   </div>
                   
-                  {/* Social media buttons */}
+               
                   <div className="flex space-x-4 mt-5">
-                    {/* GitHub button */}
+                   
                     <a 
                       href="https://github.com/yourusername" 
                       target="_blank" 
@@ -139,7 +139,7 @@ setContact({
                       GitHub
                     </a>
                     
-                    {/* LinkedIn button */}
+              
                     <a 
                       href="https://www.linkedin.com/in/yourusername" 
                       target="_blank" 

@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Navbar from "./component/navbar";
-import Contact from "./pages/Contact";
+import Navbar from "./component/Navbar";
 import Service from "./pages/Service";
 import Register from "./pages/Register";
 import Login from "./pages/login";
@@ -19,7 +18,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<LogOut />} />
-        <Route path="/contact" element={<><Navbar /><Contact /></>} />
+  
         <Route path="*"element={<Error/>}></Route>
       </Routes>
     </BrowserRouter>
