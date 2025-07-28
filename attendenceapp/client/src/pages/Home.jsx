@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "../components/ui/button"
-<<<<<<< HEAD
+
 import { Card, CardContent } from "../components/ui/Card"
-import { Badge } from "../components/ui/badge"
-=======
-import { Card, CardContent } from "../components/ui/card"
+
+
+
 import { Badge } from "../components/ui/Badge"
->>>>>>> 2c9c6f29 ('commut')
+
 import { toast } from "react-toastify"
 import {
   Calendar,
@@ -79,7 +79,7 @@ const navigate = useNavigate();
 
 useEffect(() => {
   if (!isLogin) {
-    navigate("/"); 
+    navigate("/home"); 
   }
 }, [user, navigate]);
 
