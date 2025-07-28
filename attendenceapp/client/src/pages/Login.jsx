@@ -5,7 +5,7 @@ import { HexagonBackground } from "@/components/animate-ui/backgrounds/hexagon"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/Input"
 import { Label } from "@/components/ui/Label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, EyeOff, Mail, Lock } from "lucide-react"
 import {useAuth} from '../store/useAuth'
 import { useNavigate } from "react-router-dom"
