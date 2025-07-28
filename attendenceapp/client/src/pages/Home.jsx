@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Avatar, AvatarImage } from "@/components/ui/Avatar"
 import { Button } from "../components/ui/button"
-import { Card, CardContent } from "../components/ui/card"
+import { Card, CardContent } from "../components/ui/Card"
 import { Badge } from "../components/ui/badge"
 import { toast } from "react-toastify"
 import {
