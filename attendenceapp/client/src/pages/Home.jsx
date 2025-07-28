@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Avatar, AvatarImage } from "@/components/ui/Avatar"
+import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "../components/ui/button"
 import { Card, CardContent } from "../components/ui/Card"
 import { Badge } from "../components/ui/badge"
