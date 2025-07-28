@@ -51,7 +51,7 @@ const { setUser,saveToken} = useAuth();
         setUser(responseData)
     
             saveToken(responseData.token)
-        Navigate("/")
+        Navigate("/home")
 
       setTimeout(() => {
         window.location.reload()
@@ -59,7 +59,7 @@ const { setUser,saveToken} = useAuth();
       toast.success(responseData.message || "Login successful")
  
  
-     Navigate('/')
+     Navigate('/home')
     
   
       } else {
