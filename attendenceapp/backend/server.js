@@ -7,12 +7,12 @@ const app = express()
 
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
-A
+
 
 
 
 const corsoption ={
-      origin: '*',
+      origin: 'http://localhost:5173',
        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
       credentials: true
         
