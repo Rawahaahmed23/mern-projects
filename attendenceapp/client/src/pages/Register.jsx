@@ -76,7 +76,7 @@ function Register() {
         profileImage: cloudData.secure_url,
       }
 
-      const response = await fetch("mern-projects.railway.internal/register", {
+      const response = await fetch("mern-projects-production.up.railway.app/register", {
         method: "POST",
         credentials: "include",
         headers: {
