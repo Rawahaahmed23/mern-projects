@@ -38,7 +38,7 @@ try{
 useEffect(() => {
   const userAuthentication = async () => {
     try {
-      const response = await fetch("http://localhost:5000/user", {
+      const response = await fetch("mern-projects.railway.internal/user", {
         method: "GET",
         credentials: "include",
       });
