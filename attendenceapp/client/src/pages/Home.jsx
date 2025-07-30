@@ -6,7 +6,7 @@ import { Card, CardContent } from "../components/ui/Card"
 
 
 
-import { Badge } from "../components/ui/Badge"
+import { Badge } from "../components/ui/badge"
 
 import { toast } from "react-toastify"
 import {
