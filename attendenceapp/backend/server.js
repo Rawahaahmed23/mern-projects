@@ -12,7 +12,7 @@ app.use(cookieParser());
 
 
 const corsoption ={
-      origin: '*',
+      origin: 'https://mern-projects-xwfe-git-main-rawahaahmed23s-projects.vercel.app',
        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
       credentials: true
         
