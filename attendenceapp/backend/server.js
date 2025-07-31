@@ -11,14 +11,15 @@ app.use(cookieParser());
 
 
 
-const corsoption ={
-origin: 'https://mern-projects-rho.vercel.app',
-       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
-      credentials: true
-        
-  
-}
-app.use(cors(corsoption))
+const corsOptions = {
+  origin: [
+    'https://mern-projects-rho.vercel.app',
+    'https://mern-projects-s1jo-git-main-rawahqas-projects.vercel.app'
+  ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
+  credentials: true
+};
+app.use(cors(corsOptions))
 app.use(express.json());
 const errormiddleware = require('./middleware/errormiddleware')
 const authRoute = require('./router/auth')
