@@ -13,7 +13,7 @@ app.use(cookieParser());
 
 const corsOptions = {
   origin: [
-    '*'
+    'https://mern-projects-rosy.vercel.app'
   ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
   credentials: true
