@@ -22,7 +22,8 @@ export const UserProvider = ({ children }) => {
       const savetoken = Cookies.remove("token");
     } catch (error) {}
   };
-  const token = localStorage.getItem("token");
+const token = Cookies.get("token"); // ✅ correct
+
   useEffect(() => {
     const userAuthentication = async () => {
       try {
