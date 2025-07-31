@@ -33,7 +33,6 @@ try{
 
 }
 };
-const token = Cookies.get("token");
 
 useEffect(() => {
   const userAuthentication = async () => {

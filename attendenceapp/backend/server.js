@@ -13,7 +13,8 @@ app.use(cookieParser());
 
 const corsOptions = {
   origin: [
-    'https://mern-projects-rosy.vercel.app'
+    'https://mern-projects-rosy.vercel.app',
+    'https://localhost:5713',
   ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
   credentials: true

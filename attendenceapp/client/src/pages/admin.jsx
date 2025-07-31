@@ -62,7 +62,7 @@ export default function UserManagementPage() {
           credentials: "include",
         });
         const data = await res.json();
-        console.log(data);
+      
 
         setUsers(data);
       } catch (error) {
