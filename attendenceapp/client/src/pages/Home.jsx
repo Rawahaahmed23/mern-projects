@@ -5,8 +5,10 @@ import { Button } from "../components/ui/button"
 import { Card, CardContent } from "../components/ui/Card"
 
 
-
 import { Badge } from "../components/ui/badge"
+
+import { Badge } from "lucide-react"
+
 
 import { toast } from "react-toastify"
 import {
@@ -48,7 +50,7 @@ const {isLogin} = useAuth()
 
   const handleCheckIn = async () => {
     try {
-      const response = await fetch("https://mern-projects-production.up.railway.app/cheakin", {
+      const response = await fetch("https://mern-projects-production-c94e.up.railway.app/cheakin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,7 +90,7 @@ useEffect(() => {
 
   const handleCheckOut = async () => {
     try {
-      const response = await fetch("https://mern-projects-production.up.railway.app/cheakout", {
+      const response = await fetch("https://mern-projects-production-c94e.up.railway.app/cheakout", {
         method: "POST",
         credentials: "include",
         headers: {
