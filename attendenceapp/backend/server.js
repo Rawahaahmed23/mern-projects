@@ -12,7 +12,7 @@ app.use(cookieParser());
 
 
 const corsoption ={
-origin: 'https://mern-projects-kfri.vercel.app',
+origin: 'https://mern-projects-rho.vercel.app/',
        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
       credentials: true
         
