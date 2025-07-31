@@ -49,6 +49,8 @@ export const UserProvider = ({ children }) => {
       }
     };
 
+    console.log(token);
+    
     userAuthentication();
 
     const timer = setTimeout(() => {
