@@ -33,14 +33,16 @@ try{
 
 }
 };
-
+const token = Cookies.get("token");
 
 useEffect(() => {
   const userAuthentication = async () => {
     try {
       const response = await fetch("https://mern-projects-production-c94e.up.railway.app/user", {
         method: "GET",
-        credentials: "include",
+       headers: {
+    "Authorization": `Bearer ${token}`,
+  }
       });
 
       if (response.ok) {

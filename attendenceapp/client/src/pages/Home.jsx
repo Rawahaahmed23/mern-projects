@@ -22,7 +22,7 @@ import {
 import { useAuth } from "@/store/useAuth"
 
 import { useNavigate } from "react-router-dom"
-import { data, NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 export default function Home() {
   const [viewMode, setViewMode] = useState("grid")
