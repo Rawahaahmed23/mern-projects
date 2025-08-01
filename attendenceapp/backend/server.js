@@ -6,18 +6,17 @@ const app = express()
 
 
 const cookieParser = require("cookie-parser");
-app.use(cookieParser());
 
 
 
 
 const corsOptions = {
   origin: [
-    'https://mern-projects-ncy2.vercel.app',
+    'https://mern-projects-rosy.vercel.app',
     
     'http://localhost:5173',
   ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
   credentials: true,
 };
 app.use(cors(corsOptions))
@@ -32,6 +31,7 @@ const connecdb = require('./utils/db')
 const Port = 5000
 app.use('/',authRoute)
 app.use('/admin', adminRoute)
+app.use(cookieParser());
 
 app.use(errormiddleware)
 
