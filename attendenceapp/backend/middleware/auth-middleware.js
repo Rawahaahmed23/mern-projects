@@ -11,7 +11,7 @@ const authMiddleware = async (req, res, next) => {
   }
 
   try {
-    // ✅ Remove this unnecessary replace:
+  
     const userdata = jwt.verify(token, process.env.JWT_SELECT_KEY);
 
     const user = await User.findById(userdata.userId).select({ password: 0 });
