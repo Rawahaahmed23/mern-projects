@@ -22,20 +22,15 @@ export const UserProvider = ({ children }) => {
       const savetoken = Cookies.remove("token");
     } catch (error) {}
   };
-const token = Cookies.get("token"); // ✅ correct
+
 
   useEffect(() => {
     const userAuthentication = async () => {
       try {
-        const response = await fetch(
-          "https://mern-projects-production-c94e.up.railway.app/user",
-          {
+        const response = await fetch("http://localhost:5000/user", {
             method: "GET",
             credentials: "include",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+         
           }
         );
 
@@ -50,7 +45,6 @@ const token = Cookies.get("token"); // ✅ correct
       }
     };
 
-    console.log(token);
     
     userAuthentication();
 

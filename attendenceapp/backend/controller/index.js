@@ -94,10 +94,7 @@ const user = async (req, res) => {
     const loggedInUser = req.user;
 
     const getuser = await User.findById(loggedInUser._id).select("-password");
-   
-    
-    
-
+  
     res.status(200).json({ user: getuser });
   } catch (error) {
     console.error("User route error:", error);

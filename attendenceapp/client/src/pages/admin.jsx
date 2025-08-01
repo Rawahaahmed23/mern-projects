@@ -57,7 +57,7 @@ export default function UserManagementPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("https://mern-projects-production-c94e.up.railway.app/user", {
+        const res = await fetch("http://localhost:5000/admin/user", {
           method: "GET",
           credentials: "include",
         });
