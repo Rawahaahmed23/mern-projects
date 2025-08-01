@@ -12,7 +12,7 @@ const cookieParser = require("cookie-parser");
 
 const corsOptions = {
   origin: [
-    'https://mern-projects-rosy.vercel.app',
+    'https://mern-projects-gu23.vercel.app/',
     
     'http://localhost:5173',
   ],
