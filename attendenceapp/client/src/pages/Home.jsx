@@ -7,7 +7,7 @@ import { Card, CardContent } from "../components/ui/Card"
 
 
 
-import { Badge } from "lucide-react"
+import { Badge } from "../components/ui/Badge"
 
 
 import { toast } from "react-toastify"
