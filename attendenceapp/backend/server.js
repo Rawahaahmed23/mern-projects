@@ -13,7 +13,6 @@ const cookieParser = require("cookie-parser");
 const corsOptions = {
   origin: [
     'https://mern-projects-rosy.vercel.app',
-    
     'http://localhost:5173',
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
@@ -28,10 +27,10 @@ const connecdb = require('./utils/db')
 
 
 
+app.use(cookieParser());
 const Port = 5000
 app.use('/',authRoute)
 app.use('/admin', adminRoute)
-app.use(cookieParser());
 
 app.use(errormiddleware)
 
