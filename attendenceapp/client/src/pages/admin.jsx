@@ -55,11 +55,15 @@ export default function UserManagementPage() {
   );
 
   useEffect(() => {
+        const token = Cookies.get("token");
     const fetchUsers = async () => {
       try {
         const res = await fetch("https://mern-projects-production-9252.up.railway.app/admin/user", {
           method: "GET",
           credentials: "include",
+                 headers: {
+    Authorization: `Bearer ${token}`,
+  },
         });
         const data = await res.json();
       
