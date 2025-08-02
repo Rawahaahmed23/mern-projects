@@ -6,22 +6,23 @@ const app = express()
 
 
 const cookieParser = require("cookie-parser");
-app.use(cookieParser());
 
 
 
 
 const corsOptions = {
   origin: [
-  'https://mern-projects-gu23-git-main-rawahaahmed23s-projects.vercel.app',  
-'http://localhost:5173',
-
+    'https://mern-projects-ncy2.vercel.app',  
+    'http://localhost:5173',
+    
+    
   ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
 };
 
 
+app.use(cookieParser());
 app.use(cors(corsOptions))
 app.use(express.json());
 const errormiddleware = require('./middleware/errormiddleware')

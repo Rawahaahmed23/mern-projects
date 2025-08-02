@@ -30,9 +30,12 @@ export const UserProvider = ({ children }) => {
  
     const userAuthentication = async () => {
       try {
+             const token = Cookies.get("token");
+console.log("Token being sent:", token); 
         const response = await fetch("https://mern-projects-production-9252.up.railway.app/user", {
             method: "GET",
                  credentials: "include",
+                 
        
           }
         );
@@ -43,8 +46,7 @@ export const UserProvider = ({ children }) => {
           
         }
 
-        const token = Cookies.get("token");
-console.log("Token being sent:", token); 
+   
       } catch (error) {
         console.log("User fetch failed", error);
       } finally {
