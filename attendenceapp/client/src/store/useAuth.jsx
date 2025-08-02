@@ -1,8 +1,6 @@
 import Cookies from "js-cookie";
 import { createContext, useContext, useEffect, useState } from "react";
-
 export const UserContext = createContext();
-
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
@@ -11,9 +9,13 @@ export const UserProvider = ({ children }) => {
 
   const saveToken = async (serverToken) => {
     try {
-      Cookies.set("token", serverToken, { expires: 7 });
+   Cookies.set("token", serverToken, {
+  expires: 7,
+  secure: true, 
+  sameSite: "None", 
+});
     } catch (error) {
-      console.log(error);
+    console.log(error);
     }
   };
 
