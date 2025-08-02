@@ -40,7 +40,11 @@ export const UserProvider = ({ children }) => {
         if (response.ok) {
           const data = await response.json();
           setUser(data.user);
+          
         }
+
+        const token = Cookies.get("token");
+console.log("Token being sent:", token); 
       } catch (error) {
         console.log("User fetch failed", error);
       } finally {
