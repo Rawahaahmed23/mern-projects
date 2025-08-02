@@ -27,16 +27,13 @@ export const UserProvider = ({ children }) => {
 
 
   useEffect(() => {
-    const token = Cookies.get("token");
+ 
     const userAuthentication = async () => {
       try {
         const response = await fetch("https://mern-projects-production-9252.up.railway.app/user", {
             method: "GET",
                  credentials: "include",
-          headers: {
-    Authorization: `Bearer ${token}`,
-  },
-         
+       
           }
         );
 
