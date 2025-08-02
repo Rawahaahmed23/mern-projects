@@ -13,7 +13,8 @@ const cookieParser = require("cookie-parser");
 const corsOptions = {
   origin: [
     'https://mern-projects-ncy2.vercel.app',  
-    'http://localhost:5173',
+    'https://mern-projects-production-9252.up.railway.app'
+ 
     
     
   ],
