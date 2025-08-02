@@ -1,76 +1,71 @@
-
 import Cookies from "js-cookie";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export const UserContext = createContext();
 
-
-
-
-
-
-
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState() 
-const [loading, setLoading] = useState(true); 
+  const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
 
   const isLogin = !!user;
 
-
-  const saveToken =async (serverToken)=>{
-    try{
-      Cookies.set('token', serverToken, { expires: 7 })
-    }catch(error){
-      console.log(error);
-      
-    }
-  }
-
-const Logout = async (serverToken) => {
-try{
-  const savetoken = Cookies.remove('token') 
-}catch(error){
-
-}
-};
-
-useEffect(() => {
-  const userAuthentication = async () => {
+  const saveToken = async (serverToken) => {
     try {
-      const response = await fetch("https://mern-projects-production-c94e.up.railway.app/user",{
-        method: "GET",
-                 credentials: 'include', 
-  
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-      }
+      Cookies.set("token", serverToken, { expires: 7 });
     } catch (error) {
-      console.log("User fetch failed", error);
-    } finally {
-      setLoading(false);
+      console.log(error);
     }
   };
 
-  userAuthentication(); 
-
-  const timer = setTimeout(() => {
-    userAuthentication(); 
-  }, 2000);
-
-  return () => clearTimeout(timer);
-}, []);
+  const Logout = async (serverToken) => {
+    try {
+      const savetoken = Cookies.remove("token");
+    } catch (error) {}
+  };
 
 
+  useEffect(() => {
+    const token = Cookies.get("token");
+    const userAuthentication = async () => {
+      try {
+        const response = await fetch("https://mern-projects-production-9252.up.railway.app/user", {
+            method: "GET",
+                 credentials: "include",
+          headers: {
+    Authorization: `Bearer ${token}`,
+  },
+         
+          }
+        );
 
-return (
-  <UserContext.Provider value={{ user, Logout, isLogin,setUser, loading,saveToken }}>
-    {children}
-  </UserContext.Provider>
-);
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+        }
+      } catch (error) {
+        console.log("User fetch failed", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    
+    userAuthentication();
+
+    const timer = setTimeout(() => {
+      userAuthentication();
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <UserContext.Provider
+      value={{ user, Logout, isLogin, setUser, loading, saveToken }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export const useAuth = () => {
