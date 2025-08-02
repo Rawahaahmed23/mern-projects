@@ -32,7 +32,7 @@ export const UserProvider = ({ children }) => {
       try {
              const token = Cookies.get("token");
 console.log("Token being sent:", token); 
-        const response = await fetch("https://mern-projects-production-9252.up.railway.app/user", {
+        const response = await fetch("http://localhost:5000/user", {
             method: "GET",
                  credentials: "include",
                  
