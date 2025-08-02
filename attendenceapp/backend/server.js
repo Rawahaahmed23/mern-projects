@@ -13,7 +13,7 @@ app.use(cookieParser());
 
 const corsOptions = {
   origin: [
-    'https://mern-projects-gu23.vercel.app',
+     'https://mern-projects-gu23-git-main-rawahaahmed23s-projects.vercel.app',  
 'http://localhost:5173',
 
   ],
