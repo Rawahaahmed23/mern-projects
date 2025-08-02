@@ -8,7 +8,7 @@ const authMiddleware = require('../middleware/auth-middleware')
 
 
 
-Routes.route('/user').get(authMiddleware,adminMiddleware, main.getuserstats)
+Routes.route('/users').get(authMiddleware,adminMiddleware, main.getuserstats)
 
 
 
