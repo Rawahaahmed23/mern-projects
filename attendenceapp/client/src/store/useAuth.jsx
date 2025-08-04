@@ -31,14 +31,14 @@ export const UserProvider = ({ children }) => {
     const userAuthentication = async () => {
       try {
             
-
-        const response = await fetch("https://mern-projects-production-9252.up.railway.app/user", {
-            method: "GET",
-                 credentials: "include",
-                 
-       
-          }
-        );
+const response = await fetch("https://mern-projects-production-9252.up.railway.app/user", {
+  method: "GET",
+  credentials: "include", // Crucial for cookies
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${Cookies.get("token")}` // Manual fallback
+  }
+});
 
         if (response.ok) {
           const data = await response.json();
