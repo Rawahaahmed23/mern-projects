@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const express = require('express')
-const session = require('express-session');
 const cors = require('cors');
 const app = express()
 
@@ -26,14 +25,6 @@ const corsOptions = {
 
 app.use(cookieParser());
 app.use(cors(corsOptions))
-app.set('trust proxy', 1);
-app.use(session({
-  secret: 'abc123',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true, sameSite: 'none',domain: '.railway.app' }
-}));
-
 app.use(express.json());
 const errormiddleware = require('./middleware/errormiddleware')
 const authRoute = require('./router/auth')
