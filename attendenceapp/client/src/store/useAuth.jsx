@@ -9,10 +9,10 @@ export const UserProvider = ({ children }) => {
 
   const saveToken = async (serverToken) => {
     try {
- Cookies.set("token", token, {
-  secure: true,
-  sameSite: "None",
-  domain: ".railway.app" // Notice the leading dot
+   Cookies.set("token", serverToken, {
+  expires: 7,
+  secure: true, 
+  sameSite: "None", 
 });
     } catch (error) {
     console.log(error);
@@ -31,14 +31,14 @@ export const UserProvider = ({ children }) => {
     const userAuthentication = async () => {
       try {
             
-const response = await fetch("https://mern-projects-production-9252.up.railway.app/user", {
-  method: "GET",
-  credentials: "include", // Crucial for cookies
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${Cookies.get("token")}` // Manual fallback
-  }
-});
+
+        const response = await fetch("https://mern-projects-production-9252.up.railway.app/user", {
+            method: "GET",
+                 credentials: "include",
+                 
+       
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
