@@ -5,13 +5,15 @@ const User = require('../model/userSchema');
 
 
 const authMiddleware = async (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.status(400).json({ msg: 'token missing' });
-  }
-
   try {
-   
+    
+    let token = req.headers.authorization;
+    if (!token) {
+      return res.status(400).json({ msg: 'token missing' });
+    }
+      if (token.startsWith('Bearer ')) {
+        token = token.split(' ')[1];
+      }
     
   
     const userdata = jwt.verify(token, process.env.JWT_SELECT_KEY);
