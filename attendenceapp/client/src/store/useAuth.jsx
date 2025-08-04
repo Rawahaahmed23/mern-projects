@@ -9,47 +9,45 @@ export const UserProvider = ({ children }) => {
 
   const saveToken = async (serverToken) => {
     try {
- Cookies.set("token", serverToken, {
+   Cookies.set("token", serverToken, {
   expires: 7,
-  secure: true,
-  sameSite: "None",
+  secure: true, 
+  sameSite: "None", 
 });
     } catch (error) {
-      console.log(error);
+    console.log(error);
     }
   };
 
   const Logout = async (serverToken) => {
     try {
       const savetoken = Cookies.remove("token");
-    } catch (error) { }
+    } catch (error) {}
   };
 
 
   useEffect(() => {
-
+ 
     const userAuthentication = async () => {
       try {
+         
 
         const response = await fetch("https://mern-projects-production-9252.up.railway.app/user", {
-          method: "GET",
-          credentials: "include",
-          headers: {
+            method: "GET",
+                 credentials: "include",
+    
+                 
        
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-
-
-        }
+          }
         );
 
         if (response.ok) {
           const data = await response.json();
           setUser(data.user);
-
+          
         }
 
-
+   
       } catch (error) {
         console.log("User fetch failed", error);
       } finally {
@@ -57,7 +55,7 @@ export const UserProvider = ({ children }) => {
       }
     };
 
-
+    
     userAuthentication();
 
     const timer = setTimeout(() => {
