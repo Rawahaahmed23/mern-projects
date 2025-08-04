@@ -9,11 +9,11 @@ export const UserProvider = ({ children }) => {
 
   const saveToken = async (serverToken) => {
     try {
-      Cookies.set("token", serverToken, {
-        expires: 7,
-        secure: true,
-        sameSite: "None",
-      });
+ Cookies.set("token", serverToken, {
+  expires: 7,
+  secure: true,
+  sameSite: "None",
+});
     } catch (error) {
       console.log(error);
     }
