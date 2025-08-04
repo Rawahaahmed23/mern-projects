@@ -11,6 +11,9 @@ const authMiddleware = async (req, res, next) => {
   }
 
   try {
+    JWT_SELECT_KEY = process.env.JWT_SELECT_KEY;
+    console.log(JWT_SELECT_KEY);
+    
   
     const userdata = jwt.verify(token, process.env.JWT_SELECT_KEY);
 
