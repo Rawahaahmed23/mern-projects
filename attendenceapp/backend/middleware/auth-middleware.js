@@ -7,7 +7,7 @@ const User = require('../model/userSchema');
 const authMiddleware = async (req, res, next) => {
   try {
     
-    let token = req.headers.authorization;
+    let token =req.cookies.token;
     if (!token) {
       return res.status(400).json({ msg: 'token missing' });
     }
