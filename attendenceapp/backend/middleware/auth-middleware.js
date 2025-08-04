@@ -5,28 +5,45 @@ const User = require('../model/userSchema');
 
 
 const authMiddleware = async (req, res, next) => {
+ const authMiddleware = async (req, res, next) => {
   try {
+    // 1. Check both cookies and authorization header
+    let token = req.cookies?.token || req.headers.authorization;
     
-    let token =req.cookies.token;
-    if (!token) {
-      return res.status(400).json({ msg: 'token missing' });
+    // 2. Handle Bearer token format
+    if (token && token.startsWith('Bearer ')) {
+      token = token.split(' ')[1];
     }
-      if (token.startsWith('Bearer ')) {
-        token = token.split(' ')[1];
-      }
-    
-  
-    const userdata = jwt.verify(token, process.env.JWT_SELECT_KEY);
 
-    const user = await User.findById(userdata.userId).select({ password: 0 });
+    if (!token) {
+      return res.status(401).json({ msg: 'Authentication required' });
+    }
+
+    // 3. Verify token
+    const userdata = jwt.verify(token, process.env.JWT_SELECT_KEY);
+    
+    // 4. Find user
+    const user = await User.findById(userdata.userId).select('-password');
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    // 5. Attach to request
     req.user = user;
     req.token = token;
-    req._id = userdata._id;
+    req.userId = userdata.userId;
 
     next();
   } catch (error) {
-    console.log(error);
-    return res.status(401).json({ msg: 'invalid token' });
+    console.log('Auth Error:', error.message);
+    
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ msg: 'Session expired' });
+    }
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ msg: 'Invalid token' });
+    }
+    res.status(500).json({ msg: 'Authentication failed' });
   }
 };
 
