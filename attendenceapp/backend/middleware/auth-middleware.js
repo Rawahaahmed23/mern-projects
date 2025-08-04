@@ -5,9 +5,9 @@ const User = require('../model/userSchema');
 const authMiddleware = async (req, res, next) => {
   try {
     // Check both Authorization header and cookies
-
-    let token = req.cookies.token;
-
+ 
+const token = req.headers.authorization?.split(" ")[1];
+    
     // 2. Validate token presence
     if (!token) {
       return res.status(401).json({ msg: 'Authentication required' });
