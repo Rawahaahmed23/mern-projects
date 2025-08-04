@@ -9,10 +9,10 @@ export const UserProvider = ({ children }) => {
 
   const saveToken = async (serverToken) => {
     try {
-   Cookies.set("token", serverToken, {
-  expires: 7,
-  secure: true, 
-  sameSite: "None", 
+ Cookies.set("token", token, {
+  secure: true,
+  sameSite: "None",
+  domain: ".railway.app" // Notice the leading dot
 });
     } catch (error) {
     console.log(error);
