@@ -26,12 +26,12 @@ const corsOptions = {
 
 app.set('trust proxy', 1);
 app.use(session({
+  secret: 'abc123',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true, sameSite: 'none',domain: '.railway.app' }
+}));
 
-  cookie: {
-  
-    domain: '.railway.app' 
-  }
-}))
 app.use(cookieParser());
 app.use(cors(corsOptions))
 app.use(express.json());
