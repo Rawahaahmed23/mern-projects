@@ -24,6 +24,8 @@ const corsOptions = {
 };
 
 
+app.use(cookieParser());
+app.use(cors(corsOptions))
 app.set('trust proxy', 1);
 app.use(session({
   secret: 'abc123',
@@ -32,8 +34,6 @@ app.use(session({
   cookie: { secure: true, sameSite: 'none',domain: '.railway.app' }
 }));
 
-app.use(cookieParser());
-app.use(cors(corsOptions))
 app.use(express.json());
 const errormiddleware = require('./middleware/errormiddleware')
 const authRoute = require('./router/auth')
