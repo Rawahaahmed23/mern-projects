@@ -45,7 +45,8 @@ const authMiddleware = async (req, res, next) => {
     }
     res.status(500).json({ msg: 'Authentication failed' });
   }
-};
+}
+}
 
 
 
