@@ -22,8 +22,7 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'],
 };
 
- JWT_SELECT_KEY = process.env.JWT_SELECT_KEY;
-    console.log(JWT_SELECT_KEY);
+
 app.use(cookieParser());
 app.use(cors(corsOptions))
 app.use(express.json());
