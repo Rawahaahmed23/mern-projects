@@ -90,7 +90,7 @@ useEffect(() => {
 
   const handleCheckOut = async () => {
     try {
-      const response = await fetch("http://mern-projects-production-9252.up.railway.app/cheakout", {
+      const response = await fetch("https://mern-projects-production-9252.up.railway.app/cheakout", {
         method: "POST",
         credentials: "include",
         headers: {
