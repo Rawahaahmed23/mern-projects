@@ -28,10 +28,7 @@ app.set('trust proxy', 1);
 app.use(session({
 
   cookie: {
-    httpOnly:true,
-    secure: true, // Use true if using HTTPS
-    sameSite: 'None', // Adjust based on your needs
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
+  
     domain: '.railway.app' 
   }
 }))
