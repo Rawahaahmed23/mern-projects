@@ -1,37 +1,33 @@
 
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 const User = require('../model/userSchema');
 
+
+
 const authMiddleware = async (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(400).json({ msg: 'token missing' });
+  }
+
   try {
-    // Check both Authorization header and cookies
- 
-const token = req.headers.authorization?.split(" ")[1];
+   
     
-    // 2. Validate token presence
-    if (!token) {
-      return res.status(401).json({ msg: 'Authentication required' });
-    }
-
-    // 3. Handle Bearer prefix safely
-    if (token.startsWith('Bearer ')) {
-      token = token.split(' ')[1];
-    }
-
-    // 4. Validate token structure
-    if (token.split('.').length !== 3) {
-      return res.status(401).json({ msg: 'Malformed token' });
-    }
-
-    // 5. Trim and verify
-    token = token.trim();
+  
     const userdata = jwt.verify(token, process.env.JWT_SELECT_KEY);
-    
-    // ... rest of code
+
+    const user = await User.findById(userdata.userId).select({ password: 0 });
+    req.user = user;
+    req.token = token;
+    req._id = userdata._id;
+
+    next();
   } catch (error) {
-    console.log('JWT Error:', error.message);
-    // Specific error handling
+    console.log(error);
+    return res.status(401).json({ msg: 'invalid token' });
   }
 };
 
-module.exports = authMiddleware;
+
+
+module.exports = authMiddleware
