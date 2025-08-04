@@ -5,11 +5,11 @@ const User = require('../model/userSchema');
 const authMiddleware = async (req, res, next) => {
   try {
     // Check both Authorization header and cookies
-    let token = req.headers.authorization;
+ 
     
-    if (!token && req.cookies.token) {
-      token = req.cookies.token;
-    }
+
+      let token = req.cookies.token;
+    
 
     if (!token) {
       return res.status(401).json({ msg: 'Authentication required' });
