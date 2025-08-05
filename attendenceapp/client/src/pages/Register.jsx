@@ -289,6 +289,8 @@ function Register() {
                         value={data.checkInLimit}
                         onChange={handleChange}
                         placeholder="e.g., 09:00 AM"
+                         pattern="^(0[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$" 
+                         title="Enter time in 12-hour format, e.g., 09:00 AM" 
                         required
                         className="w-full pl-12 pr-4 py-4 bg-[#252525] border border-[#3a3a3a] rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00d4aa] focus:border-transparent transition-all duration-200 text-lg"
                       />
