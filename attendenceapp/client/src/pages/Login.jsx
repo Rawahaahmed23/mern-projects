@@ -34,7 +34,7 @@ const { setUser,saveToken} = useAuth();
     setIsLoading(true)
 
     try {
-      const response = await fetch("https://mern-projects-production-9252.up.railway.app/login", {
+      const response = await fetch("http://localhost:5000/login", {
         method: "POST",
       headers: {
   'Content-Type': 'application/json'
