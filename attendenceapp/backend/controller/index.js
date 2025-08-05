@@ -177,20 +177,26 @@ const cheakout = async (req, res) => {
 
     const today = new Date();
     let hours = today.getHours();
-    const minutes = String(today.getMinutes()).padStart(2, "0");
-    const ampm = hours >= 12 ? "PM" : "AM";
+
 
     hours = hours % 12;
     hours = hours === 0 ? 12 : hours;
-    const formattedHours = String(hours).padStart(2, "0");
+    
 
-    const currentTime = `${formattedHours}:${minutes} ${ampm}`;
+ 
     const todayDate = today.toISOString().split("T")[0];
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
 
+const options = {
+  timeZone: "Asia/Karachi", 
+  hour: "numeric",
+  minute: "numeric",
+  hour12: true,
+};
+  const currentTime = now.toLocaleString("en-US", options)
   
     const todayAttendance = user.attendanceHistory.find((a) => {
       const d = new Date(a.date).toISOString().split("T")[0];
