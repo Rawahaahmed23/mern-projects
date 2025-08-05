@@ -107,10 +107,10 @@ useEffect(() => {
     attendanceHistory: cheakdata.attendanceHistory,
    
   }));
-             setIsCheckedIn(false) // ✅ sirf yeh line rakho
+             setIsCheckedIn(false) 
 
       }else{
-        toast.error("Already cheakout today")
+        toast.error(cheakdata.message || "Already checked out today")
       }
     } catch (error) {
       console.log(error)

@@ -68,12 +68,19 @@ const login = async (req, res) => {
     // Cookie set karo
  
 
-    return res.status(200).json({
-      message: "Login Successful",
-      token:await validemail.generateToken(),
-      userId: validemail._id.toString(),
-    });
+ const token = await validemail.generateToken();
 
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,        
+  sameSite: "None",     
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
+
+return res.status(200).json({
+  message: "Login Successful",
+  userId: validemail._id.toString(),
+});
   } catch (error) {
     console.log(error);
 
