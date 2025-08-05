@@ -197,7 +197,7 @@ const options = {
   minute: "numeric",
   hour12: true,
 };
-  const cheakoutTime = now.toLocaleString("en-US", options)
+  const cheakoutTime = today.toLocaleString("en-US", options)
   
     const todayAttendance = user.attendanceHistory.find((a) => {
       const d = new Date(a.date).toISOString().split("T")[0];
