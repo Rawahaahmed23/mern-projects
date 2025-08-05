@@ -1,4 +1,5 @@
 "use client"
+import { useRef } from "react";
 
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -19,6 +20,8 @@ import {
 } from "lucide-react"
 
 function Register() {
+  
+const fileInputRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(1)
   const [image, setImage] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -45,11 +48,15 @@ function Register() {
     }
   }
 
-  const prevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
+const prevStep = () => {
+  if (currentStep > 1) {
+    setImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
+    setCurrentStep(currentStep - 1);
   }
+};
 
   const handleInput = async (e) => {
     e.preventDefault()
@@ -108,7 +115,7 @@ function Register() {
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] flex items-center justify-center p-4">
       <div className="w-full max-w-6xl bg-[#1a1a1a] rounded-3xl shadow-[0_0_60px_rgba(0,212,170,0.1)] border border-[#2a2a2a] overflow-hidden">
-        {/* Header with Steps */}
+      
         <div className="bg-gradient-to-r from-[#1e1e1e] to-[#252525] p-8 border-b border-[#2a2a2a]">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
@@ -150,17 +157,15 @@ function Register() {
 
         <form onSubmit={handleInput}>
           <div className="p-8">
-            {/* Step 1: Personal Information */}
             {currentStep === 1 && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                {/* Left Column */}
+              
                 <div className="space-y-6">
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-white mb-2">Personal Information</h2>
                     <p className="text-gray-400">Please provide your basic details</p>
                   </div>
 
-                  {/* Name */}
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Full Name *</label>
                     <div className="relative">
@@ -179,7 +184,7 @@ function Register() {
                     </div>
                   </div>
 
-                  {/* Email */}
+              
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>
                     <div className="relative">
@@ -199,14 +204,14 @@ function Register() {
                   </div>
                 </div>
 
-                {/* Right Column */}
+        
                 <div className="space-y-6">
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-white mb-2">Security & Contact</h2>
                     <p className="text-gray-400">Set up your login credentials</p>
                   </div>
 
-                  {/* Phone Number */}
+          
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Phone Number *</label>
                     <div className="relative">
@@ -225,7 +230,7 @@ function Register() {
                     </div>
                   </div>
 
-                  {/* Password */}
+       
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Password *</label>
                     <div className="relative">
@@ -247,18 +252,17 @@ function Register() {
               </div>
             )}
 
-            {/* Step 2: Work Details */}
+
             {currentStep === 2 && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                {/* Left Column */}
+        
                 <div className="space-y-6">
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-white mb-2">Work Information</h2>
                     <p className="text-gray-400">Configure your work profile</p>
                   </div>
 
-                  {/* Role */}
-                  <div className="group">
+                      <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Job Role *</label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500">
@@ -276,7 +280,7 @@ function Register() {
                     </div>
                   </div>
 
-                  {/* Check-In Time */}
+                 
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Check-In Time *</label>
                     <div className="relative">
@@ -297,14 +301,14 @@ function Register() {
                   </div>
                 </div>
 
-                {/* Right Column */}
+       
                 <div className="space-y-6">
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-white mb-2">Profile Setup</h2>
                     <p className="text-gray-400">Upload your profile picture</p>
                   </div>
 
-                  {/* Profile Image */}
+   
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Profile Picture *</label>
                     <div className="relative">
@@ -323,9 +327,7 @@ function Register() {
                           name="profileImage"
                           type="file"
                           accept="image/*"
-                          onChange={(e) => {
-                            setImage(e.target.files[0])
-                          }}
+                         onChange={(e) => setImage(e.target.files[0])}
                           required
                           className="hidden"
                         />
@@ -336,7 +338,7 @@ function Register() {
               </div>
             )}
 
-            {/* Navigation Buttons */}
+      
             <div className="flex justify-between items-center mt-12 pt-8 border-t border-[#2a2a2a]">
               <div>
                 {currentStep > 1 && (

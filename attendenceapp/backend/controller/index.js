@@ -116,13 +116,13 @@ const checkIn = async (req, res) => {
     const minutes = String(now.getMinutes()).padStart(2, "0");
 
 const options = {
-  timeZone: "Asia/Karachi", // ✅ Set to Pakistan time
+  timeZone: "Asia/Karachi", 
   hour: "numeric",
   minute: "numeric",
   hour12: true,
 };
 
-const currentTime = now.toLocaleString("en-US", options); // e.g. "1:02 PM"
+    const currentTime = `${formattedHours}:${minutes} ${ampm}`;
 
     const todayDate = now.toISOString().split("T")[0]; // only date part
 
@@ -138,7 +138,7 @@ const currentTime = now.toLocaleString("en-US", options); // e.g. "1:02 PM"
     const checkInLimit = user.checkInLimit; // default if not set
     const isLate = currentTime > checkInLimit;
     
-  
+  const cheakinTime = now.toLocaleString("en-US", options)
     
     const status = isLate ? "Late" : "On Time";
 
@@ -146,17 +146,17 @@ const currentTime = now.toLocaleString("en-US", options); // e.g. "1:02 PM"
     user.attendanceHistory.push({
       date: now,
       status,
-      checkInTime: currentTime,
+      checkInTime: cheakinTime,
     });
 
     user.totalAttendance += 1;
-    user.checkInTime = currentTime;
+    user.checkInTime = cheakinTime;
 
     await user.save();
 
     res.status(200).json({
       message: "Check-in successful",
-      checkInTime: currentTime,
+      checkInTime: cheakinTime,
       status,
     });
   } catch (error) {
