@@ -177,13 +177,14 @@ const cheakout = async (req, res) => {
 
     const today = new Date();
     let hours = today.getHours();
-
+    const minutes = String(today.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
 
     hours = hours % 12;
     hours = hours === 0 ? 12 : hours;
-    
+    const formattedHours = String(hours).padStart(2, "0");
 
- 
+    const currentTime = `${formattedHours}:${minutes} ${ampm}`;
     const todayDate = today.toISOString().split("T")[0];
 
     if (!user) {
@@ -196,7 +197,7 @@ const options = {
   minute: "numeric",
   hour12: true,
 };
-  const currentTime = now.toLocaleString("en-US", options)
+  const cheakoutTime = now.toLocaleString("en-US", options)
   
     const todayAttendance = user.attendanceHistory.find((a) => {
       const d = new Date(a.date).toISOString().split("T")[0];
@@ -207,15 +208,15 @@ const options = {
       return res.status(400).json({ message: "No valid check-in found or already checked out" });
     }
 
-    todayAttendance.checkOutTime = currentTime;
-    user.checkOutTime = currentTime
+    todayAttendance.checkOutTime = cheakoutTime;
+    user.checkOutTime = cheakoutTime
     user.markModified("attendanceHistory");
 
     await user.save();
 
     res.status(200).json({
       message: "Check-out successful",
-      checkOutTime: currentTime,
+      checkOutTime: cheakoutTime,
       attendanceHistory: user.attendanceHistory,
     });
   } catch (error) {
