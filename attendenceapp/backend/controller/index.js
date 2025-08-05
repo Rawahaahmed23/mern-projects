@@ -112,8 +112,8 @@ const checkIn = async (req, res) => {
     }
 
     const now = new Date();
-    const formattedHours = String(hours).padStart(2, "0");
     const hours = String(now.getHours()).padStart(2, "0");
+    const formattedHours = String(hours).padStart(2, "0");
     const minutes = String(now.getMinutes()).padStart(2, "0");
 
 const options = {
