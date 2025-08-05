@@ -115,6 +115,7 @@ const checkIn = async (req, res) => {
     const hours = String(now.getHours()).padStart(2, "0");
     const formattedHours = String(hours).padStart(2, "0");
     const minutes = String(now.getMinutes()).padStart(2, "0");
+        const ampm = hours >= 12 ? "PM" : "AM";
 
 const options = {
   timeZone: "Asia/Karachi", 
