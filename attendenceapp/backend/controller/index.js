@@ -114,11 +114,18 @@ const checkIn = async (req, res) => {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, "0");
     const minutes = String(now.getMinutes()).padStart(2, "0");
-    const currentTime = `${hours}:${minutes}`; // e.g. 08:45
+
+const options = {
+  timeZone: "Asia/Karachi", // ✅ Set to Pakistan time
+  hour: "numeric",
+  minute: "numeric",
+  hour12: true,
+};
+
+const currentTime = now.toLocaleString("en-US", options); // e.g. "1:02 PM"
 
     const todayDate = now.toISOString().split("T")[0]; // only date part
 
-    // Check if already checked in today
     const alreadyCheckedIn = user.attendanceHistory.some((entry) => {
       const entryDate = new Date(entry.date).toISOString().split("T")[0];
       return entryDate === todayDate;
