@@ -24,11 +24,6 @@ const register = async (req, res, next) => {
       folder: "user_profiles",
       public_id: `${name}_profile_${Date.now()}`,
     });
-  
-
-
-
-
 
     const userCreate = await User.create({
       name,
@@ -42,8 +37,6 @@ const register = async (req, res, next) => {
         url: uploadResult.secure_url,
       },
     });
-
-  
 
     res.status(200).json({
       message: "registration Sucessful",

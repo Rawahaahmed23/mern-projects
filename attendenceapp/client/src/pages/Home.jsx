@@ -50,11 +50,9 @@ const {isLogin} = useAuth()
 
   const handleCheckIn = async () => {
     try {
-      const response = await fetch("https://mern-projects-production-9252.up.railway.app/cheakin", {
+      const response = await fetch("http://localhost:5000/cheakin", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    
         credentials: "include",
       })
  const data = await response.json()
