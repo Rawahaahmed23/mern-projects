@@ -111,37 +111,69 @@ const checkIn = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Current time in Asia/Karachi
-   const now = new Date();
+    const now = new Date();
 
-const checkInTimeDisplay = now.toLocaleTimeString("en-US", {
-  timeZone: "Asia/Karachi",
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: true,
-});
-  
+    // Karachi ka sahi display time (hh:mm AM/PM)
+    const checkInTimeDisplay = now.toLocaleTimeString("en-US", {
+      timeZone: "Asia/Karachi",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
 
-    const [limitHourStr, limitMinuteStr, period] = user.checkInLimit
-      .match(/(\d+):(\d+) (\w+)/)
-      .slice(1);
+    // Karachi ke hours/minutes (24-hour format) for comparison
+    const currentHour = parseInt(
+      now.toLocaleString("en-US", {
+        timeZone: "Asia/Karachi",
+        hour: "2-digit",
+        hour12: false,
+      }),
+      10
+    );
 
-    let limitHours = parseInt(limitHourStr, 10);
-    if (period === "PM" && limitHours !== 12) limitHours += 12;
-    if (period === "AM" && limitHours === 12) limitHours = 0;
+    const currentMinute = parseInt(
+      now.toLocaleString("en-US", {
+        timeZone: "Asia/Karachi",
+        minute: "2-digit",
+      }),
+      10
+    );
 
-    // Create Date object for check-in limit
-    const checkInLimitDate = new Date(currentTimeInKarachi);
-    checkInLimitDate.setHours(limitHours, parseInt(limitMinuteStr, 10), 0, 0);
+    const currentTotalMinutes = currentHour * 60 + currentMinute;
 
+    // Parse check-in limit from DB (e.g. "09:30 AM")
+    const match = user.checkInLimit.match(/(\d+):(\d+) (\w+)/);
+    if (!match) {
+      return res.status(400).json({ message: "Invalid check-in limit format" });
+    }
 
-    const isLate = currentTimeInKarachi > checkInLimitDate;
+    const [limitHourStr, limitMinuteStr, period] = match.slice(1);
+    let limitHour = parseInt(limitHourStr, 10);
+    if (period.toUpperCase() === "PM" && limitHour !== 12) limitHour += 12;
+    if (period.toUpperCase() === "AM" && limitHour === 12) limitHour = 0;
+
+    const limitTotalMinutes =
+      limitHour * 60 + parseInt(limitMinuteStr, 10);
+
+    // Compare times
+    const isLate = currentTotalMinutes > limitTotalMinutes;
     const status = isLate ? "Late" : "On Time";
 
+    // Today's date for duplicate check
+    const todayDate = now.toLocaleString("en-US", {
+      timeZone: "Asia/Karachi",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
 
-    const todayDate = currentTimeInKarachi.toISOString().split("T")[0];
     const alreadyCheckedIn = user.attendanceHistory.some((entry) => {
-      const entryDate = new Date(entry.date).toISOString().split("T")[0];
+      const entryDate = new Date(entry.date).toLocaleString("en-US", {
+        timeZone: "Asia/Karachi",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
       return entryDate === todayDate;
     });
 
@@ -150,7 +182,7 @@ const checkInTimeDisplay = now.toLocaleTimeString("en-US", {
     //   return res.status(400).json({ message: "Already checked in today" });
     // }
 
-
+    // Save check-in
     user.attendanceHistory.push({
       date: now,
       status,
