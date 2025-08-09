@@ -113,16 +113,18 @@ const checkIn = async (req, res) => {
 
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, "0");
+    const formattedHours = String(hours).padStart(2, "0");
     const minutes = String(now.getMinutes()).padStart(2, "0");
+        const ampm = hours >= 12 ? "PM" : "AM";
 
 const options = {
-  timeZone: "Asia/Karachi", // ✅ Set to Pakistan time
+  timeZone: "Asia/Karachi", 
   hour: "numeric",
   minute: "numeric",
   hour12: true,
 };
 
-const currentTime = now.toLocaleString("en-US", options); // e.g. "1:02 PM"
+    const currentTime = `${formattedHours}:${minutes} ${ampm}`;
 
     const todayDate = now.toISOString().split("T")[0]; // only date part
 
@@ -138,7 +140,7 @@ const currentTime = now.toLocaleString("en-US", options); // e.g. "1:02 PM"
     const checkInLimit = user.checkInLimit; // default if not set
     const isLate = currentTime > checkInLimit;
     
-  
+  const cheakinTime = now.toLocaleString("en-US", options)
     
     const status = isLate ? "Late" : "On Time";
 
@@ -146,17 +148,17 @@ const currentTime = now.toLocaleString("en-US", options); // e.g. "1:02 PM"
     user.attendanceHistory.push({
       date: now,
       status,
-      checkInTime: currentTime,
+      checkInTime: cheakinTime,
     });
 
     user.totalAttendance += 1;
-    user.checkInTime = currentTime;
+    user.checkInTime = cheakinTime;
 
     await user.save();
 
     res.status(200).json({
       message: "Check-in successful",
-      checkInTime: currentTime,
+      checkInTime: cheakinTime,
       status,
     });
   } catch (error) {
@@ -189,6 +191,13 @@ const cheakout = async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
 
+const options = {
+  timeZone: "Asia/Karachi", 
+  hour: "numeric",
+  minute: "numeric",
+  hour12: true,
+};
+  const cheakoutTime = today.toLocaleString("en-US", options)
   
     const todayAttendance = user.attendanceHistory.find((a) => {
       const d = new Date(a.date).toISOString().split("T")[0];
@@ -199,15 +208,15 @@ const cheakout = async (req, res) => {
       return res.status(400).json({ message: "No valid check-in found or already checked out" });
     }
 
-    todayAttendance.checkOutTime = currentTime;
-    user.checkOutTime = currentTime
+    todayAttendance.checkOutTime = cheakoutTime;
+    user.checkOutTime = cheakoutTime
     user.markModified("attendanceHistory");
 
     await user.save();
 
     res.status(200).json({
       message: "Check-out successful",
-      checkOutTime: currentTime,
+      checkOutTime: cheakoutTime,
       attendanceHistory: user.attendanceHistory,
     });
   } catch (error) {

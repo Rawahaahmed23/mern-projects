@@ -181,7 +181,7 @@ const { setUser,saveToken} = useAuth();
 
           <p className="mt-6 text-center text-sm text-gray-600">
             Don't have an account?{" "}
-            <a href="/register" className="text-blue-600 hover:text-blue-800 font-medium">
+            <a href="/" className="text-blue-600 hover:text-blue-800 font-medium">
               Sign up here
             </a>
           </p>

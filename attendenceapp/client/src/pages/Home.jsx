@@ -107,10 +107,10 @@ useEffect(() => {
     attendanceHistory: cheakdata.attendanceHistory,
    
   }));
-             setIsCheckedIn(false) 
+             setIsCheckedIn(false)
 
       }else{
-        toast.error(cheakdata.message || "Already checked out today")
+          toast.error(cheakdata.message || "Already checked out today")
       }
     } catch (error) {
       console.log(error)
@@ -293,11 +293,11 @@ useEffect(() => {
             <Badge
               className={`ml-auto ${
                 record.status === "On Time"
-                  ? "bg-green-200 text-[#4EFECC]"
+                  ? "bg-green-500 text-[#000000]"
                   : record.status === "Late"
-                    ? "bg-yellow-500"
+                    ? "bg-red-500"
                     : "bg-red-500"
-              } text-white`}
+              } `}
             >
               {record.status}
             </Badge>
