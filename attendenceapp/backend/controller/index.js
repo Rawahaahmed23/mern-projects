@@ -143,6 +143,9 @@ const options = {
   const cheakinTime = now.toLocaleString("en-US", options)
     
     const status = isLate ? "Late" : "On Time";
+    console.log(cheakinTime)
+    console.log(status)
+    console.log(isLate)
 
     // Push check-in record
     user.attendanceHistory.push({
