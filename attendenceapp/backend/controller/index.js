@@ -177,10 +177,10 @@ const checkIn = async (req, res) => {
       return entryDate === todayDate;
     });
 
-    // Optional: block multiple check-ins
-    // if (alreadyCheckedIn) {
-    //   return res.status(400).json({ message: "Already checked in today" });
-    // }
+    
+    if (alreadyCheckedIn) {
+      return res.status(400).json({ message: "Already checked in today" });
+     }
 
     // Save check-in
     user.attendanceHistory.push({
