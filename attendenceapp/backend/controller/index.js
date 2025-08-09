@@ -112,19 +112,15 @@ const checkIn = async (req, res) => {
     }
 
     // Current time in Asia/Karachi
-    const now = new Date();
-    const currentTimeInKarachi = new Date(
-      now.toLocaleString("en-US", { timeZone: "Asia/Karachi" })
-    );
+   const now = new Date();
 
-    // Check-in time (AM/PM format for display)
-    const checkInTimeDisplay = currentTimeInKarachi.toLocaleTimeString("en-US", {
-      timeZone: "Asia/Karachi",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-
+const checkInTimeDisplay = now.toLocaleTimeString("en-US", {
+  timeZone: "Asia/Karachi",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: true,
+});
+  
 
     const [limitHourStr, limitMinuteStr, period] = user.checkInLimit
       .match(/(\d+):(\d+) (\w+)/)
