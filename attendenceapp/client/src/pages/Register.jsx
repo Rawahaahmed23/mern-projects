@@ -17,14 +17,25 @@ import {
   ArrowLeft,
   CheckCircle,
   Circle,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react"
 
 function Register() {
-  
-const fileInputRef = useRef(null);
+
+  const fileInputRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(1)
   const [image, setImage] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showTimePicker, setShowTimePicker] = useState(false)
+
+  // Time picker state
+  const [timeData, setTimeData] = useState({
+    hours: 9,
+    minutes: 0,
+    ampm: 'AM'
+  })
+
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -39,6 +50,60 @@ const fileInputRef = useRef(null);
     setData({ ...data, [e.target.name]: e.target.value })
   }
 
+  // Format time for display
+  const formatTime12Hour = (hours, minutes, ampm) => {
+    const displayHours = hours === 0 ? 12 : hours
+    const paddedMinutes = minutes.toString().padStart(2, '0')
+    return `${displayHours}:${paddedMinutes} ${ampm}`
+  }
+
+  // Format time for backend (24-hour format)
+  const formatTime24Hour = (hours, minutes, ampm) => {
+    let hour24 = hours
+    if (ampm === 'PM' && hours !== 12) hour24 += 12
+    if (ampm === 'AM' && hours === 12) hour24 = 0
+    return `${hour24.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
+  }
+
+  // Update time and sync with form data
+  const updateTime = (newTimeData) => {
+    setTimeData(newTimeData)
+    const time24 = formatTime24Hour(newTimeData.hours, newTimeData.minutes, newTimeData.ampm)
+    setData({ ...data, checkInLimit: time24 })
+  }
+
+  const incrementValue = (type) => {
+    const newTimeData = { ...timeData }
+    switch (type) {
+      case 'hours':
+        newTimeData.hours = newTimeData.hours === 12 ? 1 : newTimeData.hours + 1
+        break
+      case 'minutes':
+        newTimeData.minutes = newTimeData.minutes === 59 ? 0 : newTimeData.minutes + 1
+        break
+      case 'ampm':
+        newTimeData.ampm = newTimeData.ampm === 'AM' ? 'PM' : 'AM'
+        break
+    }
+    updateTime(newTimeData)
+  }
+
+  const decrementValue = (type) => {
+    const newTimeData = { ...timeData }
+    switch (type) {
+      case 'hours':
+        newTimeData.hours = newTimeData.hours === 1 ? 12 : newTimeData.hours - 1
+        break
+      case 'minutes':
+        newTimeData.minutes = newTimeData.minutes === 0 ? 59 : newTimeData.minutes - 1
+        break
+      case 'ampm':
+        newTimeData.ampm = newTimeData.ampm === 'AM' ? 'PM' : 'AM'
+        break
+    }
+    updateTime(newTimeData)
+  }
+
   const { saveToken } = useAuth()
   const navigate = useNavigate()
 
@@ -48,15 +113,15 @@ const fileInputRef = useRef(null);
     }
   }
 
-const prevStep = () => {
-  if (currentStep > 1) {
-    setImage(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setImage(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      setCurrentStep(currentStep - 1);
     }
-    setCurrentStep(currentStep - 1);
-  }
-};
+  };
 
   const handleInput = async (e) => {
     e.preventDefault()
@@ -75,8 +140,8 @@ const prevStep = () => {
       })
 
       const cloudData = await res.json()
-       console.log(cloudData);
-       
+      console.log(cloudData);
+
       // Step 2: Send form to backend
       const finalData = {
         ...data,
@@ -115,7 +180,7 @@ const prevStep = () => {
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] flex items-center justify-center p-4">
       <div className="w-full max-w-6xl bg-[#1a1a1a] rounded-3xl shadow-[0_0_60px_rgba(0,212,170,0.1)] border border-[#2a2a2a] overflow-hidden">
-      
+
         <div className="bg-gradient-to-r from-[#1e1e1e] to-[#252525] p-8 border-b border-[#2a2a2a]">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
@@ -159,7 +224,7 @@ const prevStep = () => {
           <div className="p-8">
             {currentStep === 1 && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              
+
                 <div className="space-y-6">
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-white mb-2">Personal Information</h2>
@@ -184,7 +249,7 @@ const prevStep = () => {
                     </div>
                   </div>
 
-              
+
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>
                     <div className="relative">
@@ -204,14 +269,14 @@ const prevStep = () => {
                   </div>
                 </div>
 
-        
+
                 <div className="space-y-6">
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-white mb-2">Security & Contact</h2>
                     <p className="text-gray-400">Set up your login credentials</p>
                   </div>
 
-          
+
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Phone Number *</label>
                     <div className="relative">
@@ -230,7 +295,7 @@ const prevStep = () => {
                     </div>
                   </div>
 
-       
+
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Password *</label>
                     <div className="relative">
@@ -255,14 +320,14 @@ const prevStep = () => {
 
             {currentStep === 2 && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        
+
                 <div className="space-y-6">
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-white mb-2">Work Information</h2>
                     <p className="text-gray-400">Configure your work profile</p>
                   </div>
 
-                      <div className="group">
+                  <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Job Role *</label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500">
@@ -280,35 +345,115 @@ const prevStep = () => {
                     </div>
                   </div>
 
-                 
+                  {/* Time Picker */}
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Check-In Time *</label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500">
+                      <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500 z-10">
                         <Clock size={20} />
                       </div>
-                      <input
-                        name="checkInLimit"
-                        type="text"
-                        value={data.checkInLimit}
-                        onChange={handleChange}
-                        placeholder="e.g., 14:30 (24-hour format)"
-                       
-                        required
-                        className="w-full pl-12 pr-4 py-4 bg-[#252525] border border-[#3a3a3a] rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00d4aa] focus:border-transparent transition-all duration-200 text-lg"
-                      />
+                      <div
+                        onClick={() => setShowTimePicker(!showTimePicker)}
+                        className="w-full pl-12 pr-4 py-4 bg-[#252525] border border-[#3a3a3a] rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00d4aa] focus:border-transparent transition-all duration-200 text-lg cursor-pointer flex items-center justify-between"
+                      >
+                        <span className={data.checkInLimit ? 'text-white' : 'text-gray-500'}>
+                          {data.checkInLimit ? formatTime12Hour(timeData.hours, timeData.minutes, timeData.ampm) : 'Select check-in time'}
+                        </span>
+                        <div className={`w-5 h-5 transition-transform duration-200 ${showTimePicker ? 'rotate-180' : ''}`}>⌄</div>
+                      </div>
+
+                      {showTimePicker && (
+  <div className="absolute top-full left-0 right-0 mt-2 bg-[#252525] border border-[#3a3a3a] rounded-xl p-4 shadow-2xl z-20">
+    
+    {/* Done Button Top */}
+    <div className="flex justify-end mb-2">
+      <button
+        type="button"
+        onClick={() => setShowTimePicker(false)}
+        className="px-3 py-1 bg-[#00d4aa] text-white rounded-md hover:bg-[#00c7a0] transition-all duration-200 font-medium text-xs"
+      >
+        Done
+      </button>
+    </div>
+
+    {/* Time Controls */}
+    <div className="flex items-center justify-center space-x-4">
+      {/* Hours */}
+      <div className="flex flex-col items-center">
+        <button
+          type="button"
+          onClick={() => incrementValue('hours')}
+          className="p-1 text-[#00d4aa] hover:bg-[#00d4aa] hover:text-white rounded"
+        >
+          <ChevronUp size={16} />
+        </button>
+        <div className="text-lg font-bold text-white py-1">{timeData.hours.toString().padStart(2, '0')}</div>
+        <button
+          type="button"
+          onClick={() => decrementValue('hours')}
+          className="p-1 text-[#00d4aa] hover:bg-[#00d4aa] hover:text-white rounded"
+        >
+          <ChevronDown size={16} />
+        </button>
+        <span className="text-gray-400 text-xs mt-1">Hours</span>
+      </div>
+
+      <div className="text-lg font-bold text-gray-400">:</div>
+
+      {/* Minutes */}
+      <div className="flex flex-col items-center">
+        <button
+          type="button"
+          onClick={() => incrementValue('minutes')}
+          className="p-1 text-[#00d4aa] hover:bg-[#00d4aa] hover:text-white rounded"
+        >
+          <ChevronUp size={16} />
+        </button>
+        <div className="text-lg font-bold text-white py-1">{timeData.minutes.toString().padStart(2, '0')}</div>
+        <button
+          type="button"
+          onClick={() => decrementValue('minutes')}
+          className="p-1 text-[#00d4aa] hover:bg-[#00d4aa] hover:text-white rounded"
+        >
+          <ChevronDown size={16} />
+        </button>
+        <span className="text-gray-400 text-xs mt-1">Minutes</span>
+      </div>
+
+      {/* AM/PM */}
+      <div className="flex flex-col items-center">
+        <button
+          type="button"
+          onClick={() => incrementValue('ampm')}
+          className="p-1 text-[#00d4aa] hover:bg-[#00d4aa] hover:text-white rounded"
+        >
+          <ChevronUp size={16} />
+        </button>
+        <div className="text-lg font-bold text-white py-1">{timeData.ampm}</div>
+        <button
+          type="button"
+          onClick={() => decrementValue('ampm')}
+          className="p-1 text-[#00d4aa] hover:bg-[#00d4aa] hover:text-white rounded"
+        >
+          <ChevronDown size={16} />
+        </button>
+        <span className="text-gray-400 text-xs mt-1">Period</span>
+      </div>
+    </div>
+  </div>
+)}
                     </div>
                   </div>
                 </div>
 
-       
+
                 <div className="space-y-6">
                   <div className="mb-8">
                     <h2 className="text-2xl font-semibold text-white mb-2">Profile Setup</h2>
                     <p className="text-gray-400">Upload your profile picture</p>
                   </div>
 
-   
+
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-300 mb-2">Profile Picture *</label>
                     <div className="relative">
@@ -327,7 +472,7 @@ const prevStep = () => {
                           name="profileImage"
                           type="file"
                           accept="image/*"
-                         onChange={(e) => setImage(e.target.files[0])}
+                          onChange={(e) => setImage(e.target.files[0])}
                           required
                           className="hidden"
                         />
@@ -338,7 +483,7 @@ const prevStep = () => {
               </div>
             )}
 
-      
+
             <div className="flex justify-between items-center mt-12 pt-8 border-t border-[#2a2a2a]">
               <div>
                 {currentStep > 1 && (

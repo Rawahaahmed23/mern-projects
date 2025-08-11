@@ -111,54 +111,59 @@ const checkIn = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const formattedHours = String(hours).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-        const ampm = hours >= 12 ? "PM" : "AM";
+  
+  const now = new Date();
 
-const options = {
-  timeZone: "Asia/Karachi", 
-  hour: "numeric",
-  minute: "numeric",
+const checkInTimeDisplay = now.toLocaleTimeString("en-US", {
+  timeZone: "Asia/Karachi",
+  hour: "2-digit",
+  minute: "2-digit",
   hour12: true,
-};
+});
+  
+   
+    const [limitHourStr, limitMinuteStr, period] = user.checkInLimit
+      .match(/(\d+):(\d+) (\w+)/)
+      .slice(1);
 
-    const currentTime = `${formattedHours}:${minutes} ${ampm}`;
+    let limitHours = parseInt(limitHourStr, 10);
+    if (period === "PM" && limitHours !== 12) limitHours += 12;
+    if (period === "AM" && limitHours === 12) limitHours = 0;
 
-    const todayDate = now.toISOString().split("T")[0]; // only date part
+    // Create Date object for check-in limit
+    const checkInLimitDate = new Date(currentTimeInKarachi);
+    checkInLimitDate.setHours(limitHours, parseInt(limitMinuteStr, 10), 0, 0);
 
+    const isLate = currentTimeInKarachi > checkInLimitDate;
+    const status = isLate ? "Late" : "On Time";
+
+ 
+    const todayDate = currentTimeInKarachi.toISOString().split("T")[0];
     const alreadyCheckedIn = user.attendanceHistory.some((entry) => {
       const entryDate = new Date(entry.date).toISOString().split("T")[0];
       return entryDate === todayDate;
     });
 
+    
     if (alreadyCheckedIn) {
       return res.status(400).json({ message: "Already checked in today" });
     }
 
-    const checkInLimit = user.checkInLimit; // default if not set
-    const isLate = currentTime > checkInLimit;
-    
-  const cheakinTime = now.toLocaleString("en-US", options)
-    
-    const status = isLate ? "Late" : "On Time";
 
-    // Push check-in record
     user.attendanceHistory.push({
       date: now,
       status,
-      checkInTime: cheakinTime,
+      checkInTime: checkInTimeDisplay,
     });
 
     user.totalAttendance += 1;
-    user.checkInTime = cheakinTime;
+    user.checkInTime = checkInTimeDisplay;
 
     await user.save();
 
     res.status(200).json({
       message: "Check-in successful",
-      checkInTime: cheakinTime,
+      checkInTime: checkInTimeDisplay,
       status,
     });
   } catch (error) {
