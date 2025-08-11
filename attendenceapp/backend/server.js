@@ -3,7 +3,8 @@ require('dotenv').config();
 const express = require('express')
 const cors = require('cors');
 const app = express()
-const session = require('express-session');
+
+
 
 const cookieParser = require("cookie-parser");
 
@@ -27,16 +28,6 @@ const corsOptions = {
 
 
 app.set('trust proxy', 1);
-app.use(session({
-
-  cookie: {
-    httpOnly:true,
-    secure: true, // Use true if using HTTPS
-    sameSite: 'None', // Adjust based on your needs
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-    domain: '.railway.app' 
-  }
-}))
 
 app.use(cookieParser());
 app.use(cors(corsOptions))
@@ -48,7 +39,7 @@ const connecdb = require('./utils/db')
 
 
 
-const Port = 5000
+const PORT = process.env.PORT || 5000;
 app.use('/',authRoute)
 app.use('/admin', adminRoute)
 
