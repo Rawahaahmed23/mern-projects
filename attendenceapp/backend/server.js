@@ -27,7 +27,6 @@ const corsOptions = {
 
 
 
-app.set('trust proxy', 1);
 
 app.use(cookieParser());
 app.use(cors(corsOptions))
@@ -39,7 +38,7 @@ const connecdb = require('./utils/db')
 
 
 
-const PORT = process.env.PORT || 5000;
+const Port = 5000
 app.use('/',authRoute)
 app.use('/admin', adminRoute)
 
