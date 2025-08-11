@@ -123,32 +123,46 @@ const checkIn = async (req, res) => {
       hour12: true,
     });
 
+    // Validate checkInLimit existence
     if (!user.checkInLimit) {
       return res.status(400).json({ message: "Check-in limit is not set for this user" });
     }
 
-  
-    const match = user.checkInLimit.match(/(\d+):(\d+) (\w+)/);
-    if (!match) {
+    let limitHours, limitMinutes;
+
+    // Regex for 12-hour format (AM/PM)
+    const match12 = user.checkInLimit.match(/(\d{1,2}):(\d{2})\s?(AM|PM|am|pm)/);
+    // Regex for 24-hour format
+    const match24 = user.checkInLimit.match(/^(\d{1,2}):(\d{2})$/);
+
+    if (match12) {
+      // Extract 12-hour format
+      limitHours = parseInt(match12[1], 10);
+      limitMinutes = parseInt(match12[2], 10);
+      let period = match12[3].toUpperCase();
+
+      if (period === "PM" && limitHours !== 12) limitHours += 12;
+      if (period === "AM" && limitHours === 12) limitHours = 0;
+
+    } else if (match24) {
+      // Extract 24-hour format
+      limitHours = parseInt(match24[1], 10);
+      limitMinutes = parseInt(match24[2], 10);
+
+    } else {
       return res.status(400).json({
-        message: "Invalid check-in limit format. Expected format: HH:MM AM/PM",
+        message: "Invalid check-in limit format. Expected HH:MM AM/PM or HH:MM (24h)",
       });
     }
 
-    // Extract hours, minutes, and period
-    const [limitHourStr, limitMinuteStr, period] = match.slice(1);
-    let limitHours = parseInt(limitHourStr, 10);
-    if (period.toUpperCase() === "PM" && limitHours !== 12) limitHours += 12;
-    if (period.toUpperCase() === "AM" && limitHours === 12) limitHours = 0;
-
-
+    // Create limit time in Karachi's timezone
     const checkInLimitDate = new Date(currentTimeInKarachi);
-    checkInLimitDate.setHours(limitHours, parseInt(limitMinuteStr, 10), 0, 0);
+    checkInLimitDate.setHours(limitHours, limitMinutes, 0, 0);
 
     const isLate = currentTimeInKarachi > checkInLimitDate;
     const status = isLate ? "Late" : "On Time";
 
-
+    // Prevent multiple check-ins in same day
     const todayDate = currentTimeInKarachi.toISOString().split("T")[0];
     const alreadyCheckedIn = user.attendanceHistory.some((entry) => {
       const entryDate = new Date(entry.date).toISOString().split("T")[0];
@@ -159,7 +173,7 @@ const checkIn = async (req, res) => {
       return res.status(400).json({ message: "Already checked in today" });
     }
 
-   
+    // Save attendance
     user.attendanceHistory.push({
       date: now,
       status,
@@ -182,8 +196,6 @@ const checkIn = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-
 
 const cheakout = async (req, res) => {
   try {
