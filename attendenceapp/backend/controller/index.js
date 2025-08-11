@@ -111,49 +111,60 @@ const checkIn = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-  
-  const now = new Date();
+    // Current time in Karachi
+    const now = new Date();
+    const currentTimeInKarachi = new Date(
+      now.toLocaleString("en-US", { timeZone: "Asia/Karachi" })
+    );
 
-const checkInTimeDisplay = now.toLocaleTimeString("en-US", {
-  timeZone: "Asia/Karachi",
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: true,
-});
-  
-   
-    const [limitHourStr, limitMinuteStr, period] = user.checkInLimit
-      .match(/(\d+):(\d+) (\w+)/)
-      .slice(1);
+    const checkInTimeDisplay = currentTimeInKarachi.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
 
+    if (!user.checkInLimit) {
+      return res.status(400).json({ message: "Check-in limit is not set for this user" });
+    }
+
+  
+    const match = user.checkInLimit.match(/(\d+):(\d+) (\w+)/);
+    if (!match) {
+      return res.status(400).json({
+        message: "Invalid check-in limit format. Expected format: HH:MM AM/PM",
+      });
+    }
+
+    // Extract hours, minutes, and period
+    const [limitHourStr, limitMinuteStr, period] = match.slice(1);
     let limitHours = parseInt(limitHourStr, 10);
-    if (period === "PM" && limitHours !== 12) limitHours += 12;
-    if (period === "AM" && limitHours === 12) limitHours = 0;
+    if (period.toUpperCase() === "PM" && limitHours !== 12) limitHours += 12;
+    if (period.toUpperCase() === "AM" && limitHours === 12) limitHours = 0;
 
-    // Create Date object for check-in limit
+
     const checkInLimitDate = new Date(currentTimeInKarachi);
     checkInLimitDate.setHours(limitHours, parseInt(limitMinuteStr, 10), 0, 0);
 
     const isLate = currentTimeInKarachi > checkInLimitDate;
     const status = isLate ? "Late" : "On Time";
 
- 
+
     const todayDate = currentTimeInKarachi.toISOString().split("T")[0];
     const alreadyCheckedIn = user.attendanceHistory.some((entry) => {
       const entryDate = new Date(entry.date).toISOString().split("T")[0];
       return entryDate === todayDate;
     });
 
-    
     if (alreadyCheckedIn) {
       return res.status(400).json({ message: "Already checked in today" });
     }
 
-
+   
     user.attendanceHistory.push({
       date: now,
       status,
       checkInTime: checkInTimeDisplay,
+      checkOutTime: null,
     });
 
     user.totalAttendance += 1;
@@ -171,7 +182,6 @@ const checkInTimeDisplay = now.toLocaleTimeString("en-US", {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 
 
