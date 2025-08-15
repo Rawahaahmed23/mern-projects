@@ -14,6 +14,15 @@ const getuserstats = async(req,res)=>{
 }
 
 
+const getUserById= async(req,res)=>{
+   try{
+      const user= req.params._id
+    const data = await User.findOne({_id:id},{password:0})
+    res.status(200).json(data)
+   }catch(error){
+      console.log(error);
+      
+   }
+}
 
-
-module.exports = {getuserstats,}
+module.exports = {getuserstats,getUserById}

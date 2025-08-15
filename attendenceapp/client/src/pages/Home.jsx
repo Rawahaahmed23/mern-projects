@@ -104,7 +104,7 @@ useEffect(() => {
         setUser((prevUser) => ({
     ...prevUser,
         checkOutTime: cheakdata.checkOutTime,
-    attendanceHistory: cheakdata.attendanceHistory,
+    attendanceHistory: [...prevUser.attendanceHistory, ...data.attendanceHistory],
    
   }));
              setIsCheckedIn(false)
