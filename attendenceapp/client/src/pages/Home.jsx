@@ -64,7 +64,8 @@ if (response.ok) {
   setUser((prevUser) => ({
      ...prevUser,
     checkInTime: data.checkInTime,
-    attendanceHistory: data.attendanceHistory,
+ attendanceHistory: [...prevUser.attendanceHistory, ...data.attendanceHistory],
+   
   }));
 
   setIsCheckedIn(true);
