@@ -111,23 +111,59 @@ const checkIn = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Current time in Karachi
     const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const formattedHours = String(hours).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-        const ampm = hours >= 12 ? "PM" : "AM";
+    const currentTimeInKarachi = new Date(
+      now.toLocaleString("en-US", { timeZone: "Asia/Karachi" })
+    );
 
-const options = {
-  timeZone: "Asia/Karachi", 
-  hour: "numeric",
-  minute: "numeric",
-  hour12: true,
-};
+    const checkInTimeDisplay = currentTimeInKarachi.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
 
-    const currentTime = `${formattedHours}:${minutes} ${ampm}`;
+    // Validate checkInLimit existence
+    if (!user.checkInLimit) {
+      return res.status(400).json({ message: "Check-in limit is not set for this user" });
+    }
 
-    const todayDate = now.toISOString().split("T")[0]; // only date part
+    let limitHours, limitMinutes;
 
+    // Regex for 12-hour format (AM/PM)
+    const match12 = user.checkInLimit.match(/(\d{1,2}):(\d{2})\s?(AM|PM|am|pm)/);
+    // Regex for 24-hour format
+    const match24 = user.checkInLimit.match(/^(\d{1,2}):(\d{2})$/);
+
+    if (match12) {
+      // Extract 12-hour format
+      limitHours = parseInt(match12[1], 10);
+      limitMinutes = parseInt(match12[2], 10);
+      let period = match12[3].toUpperCase();
+
+      if (period === "PM" && limitHours !== 12) limitHours += 12;
+      if (period === "AM" && limitHours === 12) limitHours = 0;
+
+    } else if (match24) {
+      // Extract 24-hour format
+      limitHours = parseInt(match24[1], 10);
+      limitMinutes = parseInt(match24[2], 10);
+
+    } else {
+      return res.status(400).json({
+        message: "Invalid check-in limit format. Expected HH:MM AM/PM or HH:MM (24h)",
+      });
+    }
+
+    // Create limit time in Karachi's timezone
+    const checkInLimitDate = new Date(currentTimeInKarachi);
+    checkInLimitDate.setHours(limitHours, limitMinutes, 0, 0);
+
+    const isLate = currentTimeInKarachi > checkInLimitDate;
+    const status = isLate ? "Late" : "On Time";
+
+    // Prevent multiple check-ins in same day
+    const todayDate = currentTimeInKarachi.toISOString().split("T")[0];
     const alreadyCheckedIn = user.attendanceHistory.some((entry) => {
       const entryDate = new Date(entry.date).toISOString().split("T")[0];
       return entryDate === todayDate;
@@ -137,28 +173,22 @@ const options = {
       return res.status(400).json({ message: "Already checked in today" });
     }
 
-    const checkInLimit = user.checkInLimit; // default if not set
-    const isLate = currentTime > checkInLimit;
-    
-  const cheakinTime = now.toLocaleString("en-US", options)
-    
-    const status = isLate ? "Late" : "On Time";
-
-    // Push check-in record
+    // Save attendance
     user.attendanceHistory.push({
       date: now,
       status,
-      checkInTime: cheakinTime,
+      checkInTime: checkInTimeDisplay,
+      checkOutTime: null,
     });
 
     user.totalAttendance += 1;
-    user.checkInTime = cheakinTime;
+    user.checkInTime = checkInTimeDisplay;
 
     await user.save();
 
     res.status(200).json({
       message: "Check-in successful",
-      checkInTime: cheakinTime,
+      checkInTime: checkInTimeDisplay,
       status,
     });
   } catch (error) {
@@ -166,9 +196,6 @@ const options = {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-
-
 
 const cheakout = async (req, res) => {
   try {
