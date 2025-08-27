@@ -50,7 +50,7 @@ const {isLogin} = useAuth()
 
   const handleCheckIn = async () => {
     try {
-      const response = await fetch("https://mern-projects-production-9252.up.railway.app/cheakin", {
+      const response = await fetch("https://mern-projects-oj9w.onrender.com/cheakin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ useEffect(() => {
 
   const handleCheckOut = async () => {
     try {
-      const response = await fetch("https://mern-projects-production-9252.up.railway.app/cheakout", {
+      const response = await fetch("https://mern-projects-oj9w.onrender.com/cheakout", {
         method: "POST",
         credentials: "include",
         headers: {

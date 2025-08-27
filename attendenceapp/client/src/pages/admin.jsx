@@ -141,7 +141,7 @@ export default function UserManagementPage() {
     setLoading(true);
     try {
       const token = Cookies.get("token");
-      const res = await fetch(`https://mern-projects-production-9252.up.railway.app/admin/users/${userToDelete._id}`, {
+      const res = await fetch(`https://mern-projects-oj9w.onrender.com/admin/users/${userToDelete._id}`, {
         method: "DELETE",
         credentials: "include",
         headers: {
