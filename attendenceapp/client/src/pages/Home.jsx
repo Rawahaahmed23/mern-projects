@@ -37,12 +37,12 @@ const {isLogin} = useAuth()
 
 
 
-  useEffect(() => {
-    if (user?.attendanceHistory?.length > 0) {
-      const latest = user.attendanceHistory[user.attendanceHistory.length - 1] 
-      setIsCheckedIn(!latest.checkOutTime)
-    }
-  }, [user])
+useEffect(() => {
+  if (user?.attendanceHistory?.length > 0) {
+    const latest = user.attendanceHistory[user.attendanceHistory.length - 1] 
+    setIsCheckedIn(!latest.checkOutTime)   
+  }
+}, [user])
 
 
 
@@ -64,12 +64,11 @@ if (response.ok) {
 setUser((prevUser) => ({
   ...prevUser,
   checkInTime: data.checkInTime,
-  attendanceHistory: [
-    ...(prevUser.attendanceHistory || []),
-    ...(data.attendanceHistory || [])
-  ],
+  attendanceHistory: data.attendanceHistory || prevUser.attendanceHistory
 }));
-  setIsCheckedIn(true);
+
+
+  setIsCheckedIn(true); 
 } else {
   toast.error("Already checked in today");
 }
@@ -103,12 +102,11 @@ useEffect(() => {
         const cheakdata = await response.json()
            toast.success(cheakdata.message || "Cheakout sucessfully")
       
-        setUser((prevUser) => ({
-    ...prevUser,
-        checkOutTime: cheakdata.checkOutTime,
-    attendanceHistory: [...prevUser.attendanceHistory, ...cheakdata.attendanceHistory],
-   
-  }));
+setUser((prevUser) => ({
+  ...prevUser,
+  checkOutTime: cheakdata.checkOutTime,
+  attendanceHistory: cheakdata.attendanceHistory || prevUser.attendanceHistory
+}));
              setIsCheckedIn(false)
 
       }else{
