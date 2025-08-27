@@ -68,7 +68,7 @@ export default function UserManagementPage() {
   const fetchUsers = async () => {
     try {
       const token = Cookies.get("token");
-      const res = await fetch("https://mern-projects-production-9252.up.railway.app/admin/users", {
+      const res = await fetch("https://mern-projects-oj9w.onrender.com/admin/users", {
         method: "GET",
         credentials: "include",
        

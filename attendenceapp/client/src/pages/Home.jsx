@@ -61,13 +61,14 @@ const {isLogin} = useAuth()
 if (response.ok) {
   toast.success(data.message || "Cheaked in sucessfuly");
 
-  setUser((prevUser) => ({
-     ...prevUser,
-    checkInTime: data.checkInTime,
- attendanceHistory: [...prevUser.attendanceHistory, ...data.attendanceHistory],
-   
-  }));
-
+setUser((prevUser) => ({
+  ...prevUser,
+  checkInTime: data.checkInTime,
+  attendanceHistory: [
+    ...(prevUser.attendanceHistory || []),
+    ...(data.attendanceHistory || [])
+  ],
+}));
   setIsCheckedIn(true);
 } else {
   toast.error("Already checked in today");
