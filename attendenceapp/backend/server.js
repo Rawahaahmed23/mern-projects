@@ -13,7 +13,7 @@ const cookieParser = require("cookie-parser");
 
 const corsOptions = {
   origin: [
-    'https://attendenceapp-git-main-rawahaahmed23s-projects.vercel.app/',  
+    'https://attendenceapp-ten.vercel.app',  
     'https://mern-projects-oj9w.onrender.com',
     'http://localhost:5173',
  
