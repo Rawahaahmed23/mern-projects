@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import { HexagonBackground } from "@/components/animate-ui/backgrounds/hexagon"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/Input"
-import { Label } from "@/components/ui/Label"
+import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
 import { Eye, EyeOff, Mail, Lock } from "lucide-react"
 import {useAuth} from '../store/useAuth'
